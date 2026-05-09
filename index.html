@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>MLBB Topic Sender | Yuto • Hina • Yui</title>
+  <title>MLBB Topic Sender | Photo + Message</title>
   <style>
     * {
       margin: 0;
@@ -145,10 +145,119 @@
       display: inline-block;
     }
 
+    /* ========== IMAGE UPLOAD AREA ========== */
+    .image-upload-area {
+      margin-bottom: 14px;
+    }
+
+    .image-dropzone {
+      background: #0f172a;
+      border: 2px dashed #1e293b;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+      touch-action: manipulation;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .image-dropzone:active {
+      border-color: #3b82f6;
+      background: #1a1f35;
+    }
+
+    .image-dropzone.has-image {
+      border-style: solid;
+      border-color: #22c55e;
+      padding: 8px;
+      background: #0a1a12;
+    }
+
+    .dropzone-placeholder {
+      color: #475569;
+      font-size: 0.85rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .dropzone-placeholder .icon {
+      font-size: 2rem;
+    }
+
+    .image-preview-container {
+      width: 100%;
+      position: relative;
+      display: none;
+    }
+
+    .image-dropzone.has-image .image-preview-container {
+      display: block;
+    }
+
+    .image-dropzone.has-image .dropzone-placeholder {
+      display: none;
+    }
+
+    .image-preview {
+      width: 100%;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .remove-image-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 5;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      touch-action: manipulation;
+    }
+
+    .remove-image-btn:active {
+      background: #dc2626;
+      transform: scale(0.9);
+    }
+
+    .image-info {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: #64748b;
+      padding: 0 4px;
+    }
+
+    .image-info .file-size {
+      color: #22c55e;
+    }
+
     /* ========== TEXTAREA ========== */
     textarea {
       width: 100%;
-      height: 120px;
+      height: 100px;
       background: #0f172a;
       border: 1.5px solid #1e293b;
       border-radius: 14px;
@@ -181,6 +290,32 @@
       margin-top: 4px;
       padding-right: 4px;
     }
+
+    .send-preview {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+      border: 1px solid #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .send-preview .preview-badge {
+      background: #1e293b;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.7rem;
+    }
+
+    .preview-badge.has-photo { background: #14532d; color: #86efac; }
+    .preview-badge.has-text { background: #1e3a5f; color: #93c5fd; }
+    .preview-badge.empty { background: #3b1c1c; color: #fca5a5; }
 
     /* ========== BOT SELECT CARDS ========== */
     .bot-select-cards {
@@ -280,11 +415,6 @@
     .icon-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
     .icon-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
     .icon-yui { background: linear-gradient(135deg, #10b981, #059669); }
-    .icon-new { 
-      background: #334155; 
-      border: 2px dashed #475569;
-      font-size: 0.7rem;
-    }
 
     .bot-card-info {
       flex: 1;
@@ -316,38 +446,8 @@
 
     .status-active { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
     .status-inactive { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
-    .status-pending { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
-
-    /* Add more bot placeholder */
-    .add-bot-placeholder {
-      background: #0f172a;
-      border: 2px dashed #1e293b;
-      border-radius: 14px;
-      padding: 14px;
-      text-align: center;
-      color: #475569;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
-      touch-action: manipulation;
-    }
-
-    .add-bot-placeholder:active {
-      background: #1a1f2e;
-      border-color: #3b82f6;
-      color: #3b82f6;
-    }
 
     /* ========== TOPIC SELECT ========== */
-    .topic-select-row {
-      margin-bottom: 6px;
-    }
-
     .topic-chips {
       display: flex;
       gap: 10px;
@@ -390,12 +490,8 @@
       margin-top: 3px;
     }
 
-    .topic-chip.selected .topic-chip-name {
-      color: #c4b5fd;
-    }
-    .topic-chip.selected .topic-chip-id {
-      color: #8b5cf6;
-    }
+    .topic-chip.selected .topic-chip-name { color: #c4b5fd; }
+    .topic-chip.selected .topic-chip-id { color: #8b5cf6; }
 
     /* ========== SEND BUTTON ========== */
     .send-btn {
@@ -436,24 +532,7 @@
       pointer-events: none;
     }
 
-    .btn-icon {
-      font-size: 1.3rem;
-      pointer-events: none;
-    }
-
-    /* Ripple */
-    .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.3);
-      transform: scale(0);
-      animation: ripple-anim 0.6s ease-out;
-      pointer-events: none;
-    }
-
-    @keyframes ripple-anim {
-      to { transform: scale(4); opacity: 0; }
-    }
+    .btn-icon { font-size: 1.3rem; pointer-events: none; }
 
     /* ========== STATUS ========== */
     .status-card {
@@ -471,35 +550,15 @@
       transition: all 0.3s;
     }
 
-    .status-card.success {
-      border-color: #16a34a;
-      background: #0c1a12;
-    }
+    .status-card.success { border-color: #16a34a; background: #0c1a12; }
     .status-card.success .status-text { color: #86efac; }
-
-    .status-card.error {
-      border-color: #dc2626;
-      background: #1a0c0c;
-    }
+    .status-card.error { border-color: #dc2626; background: #1a0c0c; }
     .status-card.error .status-text { color: #fca5a5; }
-
-    .status-card.warning {
-      border-color: #f59e0b;
-      background: #1a1406;
-    }
+    .status-card.warning { border-color: #f59e0b; background: #1a1406; }
     .status-card.warning .status-text { color: #fcd34d; }
 
-    .status-icon {
-      font-size: 1.1rem;
-      flex-shrink: 0;
-      margin-top: 1px;
-    }
-
-    .status-text {
-      flex: 1;
-      line-height: 1.5;
-      word-break: break-word;
-    }
+    .status-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .status-text { flex: 1; line-height: 1.5; word-break: break-word; }
 
     .spinner {
       display: inline-block;
@@ -512,24 +571,9 @@
       flex-shrink: 0;
     }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ========== INFO FOOTER ========== */
-    .info-footer {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #475569;
-      padding: 6px 0;
-      line-height: 1.8;
-    }
-
-    .info-footer .highlight {
-      color: #8b5cf6;
-      font-weight: 600;
-    }
-
+    /* ========== SELECTED SUMMARY ========== */
     .selected-summary {
       background: #0f172a;
       border-radius: 10px;
@@ -545,8 +589,60 @@
       flex-wrap: wrap;
     }
 
-    .selected-summary strong {
-      color: #e2e8f0;
+    .selected-summary strong { color: #e2e8f0; }
+
+    /* ========== PROGRESS BAR ========== */
+    .progress-bar-container {
+      display: none;
+      width: 100%;
+      height: 4px;
+      background: #1e293b;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      width: 0%;
+      transition: width 0.3s;
+      border-radius: 2px;
+    }
+
+    /* ========== INFO FOOTER ========== */
+    .info-footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #475569;
+      padding: 6px 0;
+      line-height: 1.8;
+    }
+
+    .info-footer .highlight { color: #8b5cf6; font-weight: 600; }
+
+    .add-bot-placeholder {
+      background: #0f172a;
+      border: 2px dashed #1e293b;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      color: #475569;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      touch-action: manipulation;
+    }
+
+    .add-bot-placeholder:active {
+      background: #1a1f2e;
+      border-color: #3b82f6;
+      color: #3b82f6;
     }
 
     /* ========== RESPONSIVE ========== */
@@ -556,6 +652,7 @@
       .bot-card-name { font-size: 0.82rem; }
       .topic-chip { padding: 10px; }
       .send-btn { padding: 14px; font-size: 0.95rem; }
+      textarea { height: 80px; }
     }
 
     @media (min-width: 421px) {
@@ -571,7 +668,7 @@
   <div class="header">
     <div class="header-icon">📨</div>
     <h1>Topic Sender <span class="badge">MLBB</span></h1>
-    <p class="subtitle">@MLBBMCCTG • Multi-Bot Support</p>
+    <p class="subtitle">@MLBBMCCTG • Photo + Message</p>
     <div class="bot-avatars">
       <div class="bot-avatar avatar-yuto">Y</div>
       <div class="bot-avatar avatar-hina">H</div>
@@ -580,14 +677,49 @@
     </div>
   </div>
 
-  <!-- ==================== MESSAGE CARD ==================== -->
+  <!-- ==================== IMAGE + MESSAGE CARD ==================== -->
   <div class="card">
     <div class="section-label">
-      <span class="dot"></span> ပို့မည့်စာသား
+      <span class="dot"></span> 📸 ပုံနှင့် စာသား
     </div>
-    <textarea id="messageText" placeholder="ဒီမှာ စာရိုက်ပါ...&#10;ဥပမာ - မင်္ဂလာပါ အားလုံး ✨" maxlength="4096">ဟေး အားလုံးပဲ မင်္ဂလာပါ!
-Auto message from Topic Bot ✨</textarea>
+    
+    <!-- Image Upload -->
+    <div class="image-upload-area">
+      <div class="image-dropzone" id="imageDropzone">
+        <div class="dropzone-placeholder">
+          <span class="icon">🖼️</span>
+          <span>ပုံထည့်ရန် ဒီမှာနှိပ်ပါ</span>
+          <span style="font-size:0.7rem;">(မထည့်လည်းရပါသည်)</span>
+        </div>
+        <div class="image-preview-container" id="imagePreviewContainer">
+          <img id="imagePreview" class="image-preview" src="" alt="Preview">
+          <button class="remove-image-btn" id="removeImageBtn">✕</button>
+        </div>
+      </div>
+      <div class="image-info" id="imageInfo" style="display:none;">
+        <span>📷</span>
+        <span id="imageFileName">-</span>
+        <span class="file-size" id="imageFileSize">-</span>
+      </div>
+      <input type="file" id="imageInput" accept="image/*" style="display:none;">
+    </div>
+
+    <!-- Message Text -->
+    <textarea id="messageText" placeholder="စာသားထည့်ပါ (ပုံမထည့်ရင် စာပဲပို့မည်)..." maxlength="4096">ဟေး အားလုံးပဲ မင်္ဂလာပါ! ✨</textarea>
     <div class="char-count" id="charCount">0 / 4096</div>
+
+    <!-- Send Preview -->
+    <div class="send-preview" id="sendPreview">
+      <span>📤 ပို့မည့်အရာ:</span>
+      <span class="preview-badge has-text" id="previewTextBadge">စာ</span>
+      <span class="preview-badge has-photo" id="previewPhotoBadge" style="display:none;">ပုံ</span>
+      <span class="preview-badge empty" id="previewEmptyBadge">မရှိသေး</span>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-bar-container" id="progressBarContainer">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
   </div>
 
   <!-- ==================== BOT SELECTION CARD ==================== -->
@@ -595,10 +727,7 @@ Auto message from Topic Bot ✨</textarea>
     <div class="section-label">
       <span class="dot"></span> 🤖 Bot ရွေးပါ
     </div>
-    <div class="bot-select-cards" id="botSelectCards">
-      <!-- Bot cards will be generated by JavaScript -->
-    </div>
-    <!-- နောက်ထပ် Bot ထည့်ရန်နေရာ -->
+    <div class="bot-select-cards" id="botSelectCards"></div>
     <div class="add-bot-placeholder" id="addBotPlaceholder">
       <span>➕</span> နောက်ထပ် Bot ထည့်ရန် (Coming Soon)
     </div>
@@ -609,9 +738,7 @@ Auto message from Topic Bot ✨</textarea>
     <div class="section-label">
       <span class="dot"></span> 🗂️ Topic ရွေးပါ
     </div>
-    <div class="topic-chips" id="topicChips">
-      <!-- Topic chips will be generated by JavaScript -->
-    </div>
+    <div class="topic-chips" id="topicChips"></div>
     <div class="selected-summary" id="selectedSummary">
       <span>📌 <strong>@MLBBMCCTG</strong></span>
       <span>Topic: <strong id="summaryTopic">310661</strong></span>
@@ -627,57 +754,40 @@ Auto message from Topic Bot ✨</textarea>
   <!-- ==================== STATUS ==================== -->
   <div id="statusCard" class="status-card">
     <span class="status-icon">💬</span>
-    <span class="status-text" id="statusText">အဆင်သင့်ဖြစ်ပါပြီ • Bot ရွေးပါ • Topic ရွေးပါ</span>
+    <span class="status-text" id="statusText">အဆင်သင့်ဖြစ်ပါပြီ</span>
   </div>
 
   <!-- ==================== FOOTER ==================== -->
   <div class="info-footer">
-    <span class="highlight">⚠️ Bot များ Admin ဖြစ်ရန်လိုအပ်ပါသည်</span><br>
-    Topic 1 = General (auto-detect) | Topic 310661<br>
-    <span style="color:#64748b;">Yuto • Hina • Yui | Bot ကို Long Press နှိပ်၍ စမ်းသပ်နိုင်ပါသည်</span>
+    <span class="highlight">📸 ပုံ + စာ တွဲပို့နိုင်ပါသည်</span><br>
+    ပုံမထည့်ရင် စာပဲပို့မည် | ပုံပဲထည့်ရင် ပုံပဲပို့မည်<br>
+    <span style="color:#64748b;">Yuto • Hina • Yui | Long Press = Test Bot</span>
   </div>
 
 </div>
 
 <script>
   (function() {
-    console.log("🚀 Script started");
-    
+    console.log("🚀 Photo + Message Sender Started");
+
     // ==================== CONFIGURATION ====================
     const BOT_LIST = [
       {
-        id: "yuto",
-        name: "Yuto",
-        emoji: "🔵",
+        id: "yuto", name: "Yuto", emoji: "🔵",
         token: "8759285648:AAHqmcMPE4tPciixG-IzPCOVIl7E1XBhm6E",
-        color: "#3b82f6",
-        bgClass: "selected-yuto",
-        iconClass: "icon-yuto",
-        avatarClass: "avatar-yuto"
+        color: "#3b82f6", bgClass: "selected-yuto", iconClass: "icon-yuto"
       },
       {
-        id: "hina",
-        name: "Hina",
-        emoji: "🌸",
+        id: "hina", name: "Hina", emoji: "🌸",
         token: "8058558723:AAG0Cwgw4Z3bdOGpkEGgBeNKSdNBbsXUuwY",
-        color: "#ec4899",
-        bgClass: "selected-hina",
-        iconClass: "icon-hina",
-        avatarClass: "avatar-hina"
+        color: "#ec4899", bgClass: "selected-hina", iconClass: "icon-hina"
       },
       {
-        id: "yui",
-        name: "Yui",
-        emoji: "🍀",
+        id: "yui", name: "Yui", emoji: "🍀",
         token: "8728656019:AAES3bV3_5yLTm3a0lvE1dEVWBnyE6KQAwM",
-        color: "#10b981",
-        bgClass: "selected-yui",
-        iconClass: "icon-yui",
-        avatarClass: "avatar-yui"
+        color: "#10b981", bgClass: "selected-yui", iconClass: "icon-yui"
       }
-      // ====================================================
-      // 🔽 နောက်ထပ် Bot ထည့်ချင်ရင် ဒီအောက်မှာ ထည့်ပါ
-      // ====================================================
+      // 🔽 နောက်ထပ် Bot ထည့်ရန် ဒီမှာ
     ];
 
     const TOPIC_LIST = [
@@ -686,10 +796,12 @@ Auto message from Topic Bot ✨</textarea>
     ];
 
     const GROUP_USERNAME = "@MLBBMCCTG";
+    const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB (Telegram limit)
 
     // ==================== STATE ====================
     let selectedBotIndex = 0;
     let selectedTopicId = TOPIC_LIST[0].id;
+    let selectedImageFile = null;
     let isSending = false;
 
     // ==================== DOM ELEMENTS ====================
@@ -704,10 +816,85 @@ Auto message from Topic Bot ✨</textarea>
     const topicChips = document.getElementById("topicChips");
     const summaryTopic = document.getElementById("summaryTopic");
     const summaryBot = document.getElementById("summaryBot");
+    const imageDropzone = document.getElementById("imageDropzone");
+    const imageInput = document.getElementById("imageInput");
+    const imagePreview = document.getElementById("imagePreview");
+    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+    const removeImageBtn = document.getElementById("removeImageBtn");
+    const imageInfo = document.getElementById("imageInfo");
+    const imageFileName = document.getElementById("imageFileName");
+    const imageFileSize = document.getElementById("imageFileSize");
+    const previewTextBadge = document.getElementById("previewTextBadge");
+    const previewPhotoBadge = document.getElementById("previewPhotoBadge");
+    const previewEmptyBadge = document.getElementById("previewEmptyBadge");
+    const progressBarContainer = document.getElementById("progressBarContainer");
+    const progressBar = document.getElementById("progressBar");
     const addBotPlaceholder = document.getElementById("addBotPlaceholder");
 
-    console.log("✅ DOM elements loaded");
-    console.log("sendBtn:", sendBtn);
+    // ==================== IMAGE HANDLING ====================
+    function handleImageSelect(file) {
+      if (!file) return;
+
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        setStatus("ပုံဖိုင်သာ ရွေးချယ်ပါ", "error");
+        return;
+      }
+
+      // Check file size
+      if (file.size > MAX_PHOTO_SIZE) {
+        setStatus("ပုံဖိုင် 10MB ထက်မကျော်ရပါ", "error");
+        return;
+      }
+
+      selectedImageFile = file;
+
+      // Show preview
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        imagePreview.src = e.target.result;
+        imagePreviewContainer.style.display = "block";
+        imageDropzone.classList.add("has-image");
+        
+        // Show file info
+        imageInfo.style.display = "flex";
+        imageFileName.textContent = file.name.length > 30 ? file.name.substring(0, 27) + "..." : file.name;
+        imageFileSize.textContent = formatFileSize(file.size);
+      };
+      reader.readAsDataURL(file);
+
+      updateSendPreview();
+      console.log("📸 Image selected:", file.name, formatFileSize(file.size));
+    }
+
+    function removeImage() {
+      selectedImageFile = null;
+      imagePreview.src = "";
+      imagePreviewContainer.style.display = "none";
+      imageDropzone.classList.remove("has-image");
+      imageInfo.style.display = "none";
+      imageFileName.textContent = "-";
+      imageFileSize.textContent = "-";
+      imageInput.value = "";
+      updateSendPreview();
+      console.log("🗑️ Image removed");
+    }
+
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + " B";
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+    }
+
+    // ==================== SEND PREVIEW UPDATE ====================
+    function updateSendPreview() {
+      const hasText = messageTextarea.value.trim() !== "";
+      const hasPhoto = selectedImageFile !== null;
+
+      previewTextBadge.style.display = hasText ? "inline" : "none";
+      previewPhotoBadge.style.display = hasPhoto ? "inline" : "none";
+      previewEmptyBadge.style.display = (!hasText && !hasPhoto) ? "inline" : "none";
+    }
 
     // ==================== RENDER BOT CARDS ====================
     function renderBotCards() {
@@ -718,9 +905,7 @@ Auto message from Topic Bot ✨</textarea>
         card.className = `bot-card ${index === selectedBotIndex ? 'selected ' + bot.bgClass : ''}`;
         card.setAttribute("data-bot-index", index);
         card.innerHTML = `
-          <div class="bot-card-radio">
-            <div class="bot-card-radio-inner"></div>
-          </div>
+          <div class="bot-card-radio"><div class="bot-card-radio-inner"></div></div>
           <div class="bot-card-icon ${bot.iconClass}">${bot.emoji}</div>
           <div class="bot-card-info">
             <div class="bot-card-name">${bot.name}</div>
@@ -729,17 +914,14 @@ Auto message from Topic Bot ✨</textarea>
           <div class="bot-card-status status-active" title="Active"></div>
         `;
         
-        // Use both click and touch events
         card.addEventListener("click", function(e) {
           e.preventDefault();
-          console.log("Bot card clicked:", index);
           selectBot(index);
         });
         
         card.addEventListener("touchend", function(e) {
           e.preventDefault();
           e.stopPropagation();
-          console.log("Bot card touched:", index);
           selectBot(index);
         });
         
@@ -748,9 +930,7 @@ Auto message from Topic Bot ✨</textarea>
     }
 
     function selectBot(index) {
-      console.log("selectBot called:", index);
       selectedBotIndex = index;
-      
       const cards = botSelectCards.querySelectorAll(".bot-card");
       cards.forEach((card, i) => {
         card.className = "bot-card";
@@ -759,7 +939,6 @@ Auto message from Topic Bot ✨</textarea>
           card.classList.add(BOT_LIST[i].bgClass);
         }
       });
-      
       updateSummary();
     }
 
@@ -778,14 +957,12 @@ Auto message from Topic Bot ✨</textarea>
         
         chip.addEventListener("click", function(e) {
           e.preventDefault();
-          console.log("Topic chip clicked:", topic.id);
           selectTopic(topic.id);
         });
         
         chip.addEventListener("touchend", function(e) {
           e.preventDefault();
           e.stopPropagation();
-          console.log("Topic chip touched:", topic.id);
           selectTopic(topic.id);
         });
         
@@ -794,9 +971,7 @@ Auto message from Topic Bot ✨</textarea>
     }
 
     function selectTopic(topicId) {
-      console.log("selectTopic called:", topicId);
       selectedTopicId = topicId;
-      
       const chips = topicChips.querySelectorAll(".topic-chip");
       chips.forEach(chip => {
         chip.classList.remove("selected");
@@ -804,7 +979,6 @@ Auto message from Topic Bot ✨</textarea>
           chip.classList.add("selected");
         }
       });
-      
       updateSummary();
     }
 
@@ -822,6 +996,7 @@ Auto message from Topic Bot ✨</textarea>
       if (len > 4000) charCount.style.color = "#fbbf24";
       else if (len > 4090) charCount.style.color = "#ef4444";
       else charCount.style.color = "#64748b";
+      updateSendPreview();
     }
     messageTextarea.addEventListener("input", updateCharCount);
 
@@ -852,10 +1027,18 @@ Auto message from Topic Bot ✨</textarea>
       if (loading) {
         sendBtn.disabled = true;
         sendBtnText.innerHTML = '<span class="spinner"></span> ပို့နေသည်...';
+        progressBarContainer.style.display = "block";
+        progressBar.style.width = "0%";
       } else {
         sendBtn.disabled = false;
         sendBtnText.innerHTML = 'ပို့မည်';
+        progressBarContainer.style.display = "none";
+        progressBar.style.width = "0%";
       }
+    }
+
+    function updateProgress(percent) {
+      progressBar.style.width = percent + "%";
     }
 
     // ==================== SEND MESSAGE ====================
@@ -863,18 +1046,17 @@ Auto message from Topic Bot ✨</textarea>
       console.log("📤 sendMessage called");
       
       if (isSending) {
-        console.log("⚠️ Already sending, ignoring");
+        console.log("⚠️ Already sending");
         return;
       }
       
       const message = messageTextarea.value.trim();
-      
-      if (message === "") {
-        console.log("❌ Empty message");
-        setStatus("စာသားထည့်သွင်းပါ။", "error");
-        messageTextarea.focus();
-        messageTextarea.style.borderColor = "#ef4444";
-        setTimeout(() => { messageTextarea.style.borderColor = "#1e293b"; }, 1500);
+      const hasPhoto = selectedImageFile !== null;
+      const hasText = message !== "";
+
+      // ဘာမှမရှိရင် မပို့ဘူး
+      if (!hasPhoto && !hasText) {
+        setStatus("စာသား သို့မဟုတ် ပုံ ထည့်သွင်းပါ", "error");
         if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
         return;
       }
@@ -882,55 +1064,128 @@ Auto message from Topic Bot ✨</textarea>
       const bot = BOT_LIST[selectedBotIndex];
       const token = bot.token;
       const topicId = selectedTopicId;
-      const apiUrl = `https://api.telegram.org/bot${token}/sendMessage`;
 
       setLoading(true);
       
       const topicLabel = topicId === "1" ? "General" : `Topic ${topicId}`;
-      setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပို့နေသည်...`, "loading");
+      
+      if (hasPhoto && hasText) {
+        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံနှင့်စာ ပို့နေသည်...`, "loading");
+      } else if (hasPhoto) {
+        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံပို့နေသည်...`, "loading");
+      } else {
+        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ စာပို့နေသည်...`, "loading");
+      }
 
       console.log("🚀 Sending...");
       console.log("Bot:", bot.name);
       console.log("Topic:", topicId);
-      console.log("Message:", message.substring(0, 50) + "...");
+      console.log("Has Photo:", hasPhoto);
+      console.log("Has Text:", hasText);
 
       try {
-        const formData = new URLSearchParams();
-        formData.append("chat_id", GROUP_USERNAME);
-        formData.append("text", message);
-        
-        if (topicId !== "1") {
-          formData.append("message_thread_id", topicId);
-        }
-        
-        formData.append("parse_mode", "HTML");
+        // ============ ပုံပါရင် ပုံအရင်ပို့ ============
+        if (hasPhoto) {
+          updateProgress(20);
+          
+          // Send Photo
+          const photoFormData = new FormData();
+          photoFormData.append("chat_id", GROUP_USERNAME);
+          photoFormData.append("photo", selectedImageFile);
+          
+          if (topicId !== "1") {
+            photoFormData.append("message_thread_id", topicId);
+          }
+          
+          // စာပါရင် caption ထည့်
+          if (hasText) {
+            photoFormData.append("caption", message);
+            photoFormData.append("parse_mode", "HTML");
+          }
 
-        const response = await fetch(apiUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          body: formData.toString()
-        });
+          const photoApiUrl = `https://api.telegram.org/bot${token}/sendPhoto`;
+          
+          updateProgress(40);
+          
+          console.log("📸 Uploading photo...");
+          const photoResponse = await fetch(photoApiUrl, {
+            method: "POST",
+            body: photoFormData
+          });
 
-        const data = await response.json();
-        console.log("📬 Response:", data);
+          updateProgress(80);
 
-        if (data.ok) {
-          const sentTo = topicId === "1" ? "General Topic" : `Topic ${topicId}`;
-          setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${sentTo} သို့ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
-          if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-        } else {
-          const errorDesc = data.description || "အမှားရှိနေပါသည်";
-          setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
-          if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-          console.error("Telegram API Error:", data);
+          const photoData = await photoResponse.json();
+          console.log("📬 Photo Response:", photoData);
+
+          if (photoData.ok) {
+            updateProgress(100);
+            
+            if (hasText) {
+              setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံနှင့်စာ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
+            } else {
+              setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
+            }
+            
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+            
+            // Remove image after successful send
+            removeImage();
+          } else {
+            const errorDesc = photoData.description || "အမှားရှိနေပါသည်";
+            setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            console.error("Photo API Error:", photoData);
+          }
+        } 
+        // ============ ပုံမပါရင် စာပဲပို့ ============
+        else {
+          updateProgress(30);
+          
+          const formData = new URLSearchParams();
+          formData.append("chat_id", GROUP_USERNAME);
+          formData.append("text", message);
+          
+          if (topicId !== "1") {
+            formData.append("message_thread_id", topicId);
+          }
+          
+          formData.append("parse_mode", "HTML");
+
+          const apiUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+          
+          updateProgress(60);
+
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: formData.toString()
+          });
+
+          updateProgress(90);
+
+          const data = await response.json();
+          console.log("📬 Message Response:", data);
+
+          if (data.ok) {
+            updateProgress(100);
+            setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ စာ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
+            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+          } else {
+            const errorDesc = data.description || "အမှားရှိနေပါသည်";
+            setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+            console.error("Message API Error:", data);
+          }
         }
       } catch (networkError) {
         setStatus(`🌐 ${bot.name}: အင်တာနက် ချိတ်ဆက်မှု စစ်ဆေးပါ`, "error");
         console.error("Fetch Error:", networkError);
       } finally {
         setLoading(false);
+        setTimeout(() => {
+          progressBarContainer.style.display = "none";
+        }, 1000);
       }
     }
 
@@ -969,8 +1224,64 @@ Auto message from Topic Bot ✨</textarea>
     }
 
     // ==================== EVENT LISTENERS ====================
-    
-    // ✅ ပို့မည် ခလုတ် - Click Event
+
+    // Image Dropzone Click
+    imageDropzone.addEventListener("click", function(e) {
+      if (e.target === removeImageBtn) return;
+      e.preventDefault();
+      imageInput.click();
+    });
+
+    imageDropzone.addEventListener("touchend", function(e) {
+      if (e.target === removeImageBtn) return;
+      e.preventDefault();
+      imageInput.click();
+    });
+
+    // Image Input Change
+    imageInput.addEventListener("change", function(e) {
+      if (e.target.files && e.target.files[0]) {
+        handleImageSelect(e.target.files[0]);
+      }
+    });
+
+    // Remove Image Button
+    removeImageBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      removeImage();
+    });
+
+    removeImageBtn.addEventListener("touchend", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      removeImage();
+    });
+
+    // Drag and Drop (Desktop)
+    imageDropzone.addEventListener("dragover", function(e) {
+      e.preventDefault();
+      imageDropzone.style.borderColor = "#3b82f6";
+    });
+
+    imageDropzone.addEventListener("dragleave", function(e) {
+      e.preventDefault();
+      if (!selectedImageFile) {
+        imageDropzone.style.borderColor = "#1e293b";
+      }
+    });
+
+    imageDropzone.addEventListener("drop", function(e) {
+      e.preventDefault();
+      if (!selectedImageFile) {
+        imageDropzone.style.borderColor = "#1e293b";
+      }
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        handleImageSelect(e.dataTransfer.files[0]);
+      }
+    });
+
+    // Send Button
     sendBtn.addEventListener("click", function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -978,7 +1289,6 @@ Auto message from Topic Bot ✨</textarea>
       sendMessage();
     });
 
-    // ✅ ပို့မည် ခလုတ် - Touch Event (for mobile)
     sendBtn.addEventListener("touchend", function(e) {
       e.preventDefault();
       e.stopPropagation();
@@ -986,10 +1296,8 @@ Auto message from Topic Bot ✨</textarea>
       sendMessage();
     });
 
-    // Prevent touchstart from causing issues
     sendBtn.addEventListener("touchstart", function(e) {
       e.preventDefault();
-      console.log("👆 Send button touchstart");
     });
 
     // Keyboard shortcut
@@ -1005,7 +1313,6 @@ Auto message from Topic Bot ✨</textarea>
     botSelectCards.addEventListener("touchstart", function(e) {
       const card = e.target.closest(".bot-card");
       if (!card) return;
-      
       const index = parseInt(card.getAttribute("data-bot-index"));
       longPressTimer = setTimeout(() => {
         testBot(index);
@@ -1013,15 +1320,9 @@ Auto message from Topic Bot ✨</textarea>
       }, 800);
     });
     
-    botSelectCards.addEventListener("touchend", function() {
-      clearTimeout(longPressTimer);
-    });
-    
-    botSelectCards.addEventListener("touchmove", function() {
-      clearTimeout(longPressTimer);
-    });
+    botSelectCards.addEventListener("touchend", function() { clearTimeout(longPressTimer); });
+    botSelectCards.addEventListener("touchmove", function() { clearTimeout(longPressTimer); });
 
-    // Double click to test bot (desktop)
     botSelectCards.addEventListener("dblclick", function(e) {
       const card = e.target.closest(".bot-card");
       if (!card) return;
@@ -1029,7 +1330,6 @@ Auto message from Topic Bot ✨</textarea>
       testBot(index);
     });
 
-    // Add bot placeholder click
     addBotPlaceholder.addEventListener("click", function(e) {
       e.preventDefault();
       setStatus("💡 Bot အသစ်ထည့်ရန် Code ထဲက BOT_LIST Array တွင် Object အသစ်ထည့်ပါ", "warning");
@@ -1042,13 +1342,13 @@ Auto message from Topic Bot ✨</textarea>
       renderTopicChips();
       updateCharCount();
       updateSummary();
-      setStatus("အဆင်သင့်ဖြစ်ပါပြီ • ပို့မည် ခလုတ်ကို နှိပ်ပါ", "info");
+      updateSendPreview();
+      setStatus("အဆင်သင့်ဖြစ်ပါပြီ • ပုံ နှင့် စာ ပို့နိုင်ပါသည်", "info");
       
-      console.log("✅ MLBB Topic Sender Ready");
+      console.log("✅ MLBB Photo + Message Sender Ready");
       console.log("🤖 Bots:", BOT_LIST.map(b => b.name).join(", "));
-      console.log("📌 Default Bot:", BOT_LIST[selectedBotIndex].name);
-      console.log("📌 Default Topic:", selectedTopicId);
-      console.log("📤 Send button ready:", sendBtn);
+      console.log("📸 Photo support: YES (max 10MB)");
+      console.log("📝 Message support: YES");
     }
 
     init();
