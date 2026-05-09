@@ -1,0 +1,1058 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0f172a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>MLBB Topic Sender | Yuto • Hina • Yui</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: #0a0f1c;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 16px 12px 30px;
+      margin: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      touch-action: manipulation;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      margin: 0 auto;
+    }
+
+    /* ========== HEADER ========== */
+    .header {
+      text-align: center;
+      margin-bottom: 14px;
+      padding-top: 8px;
+    }
+
+    .header-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      margin: 0 auto 10px;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.35);
+    }
+
+    .header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #f1f5f9;
+      letter-spacing: -0.3px;
+    }
+
+    .header .badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #8b5cf6, #6366f1);
+      font-size: 0.7rem;
+      padding: 4px 12px;
+      border-radius: 20px;
+      color: white;
+      font-weight: 700;
+      margin-left: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.78rem;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .bot-avatars {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .bot-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: white;
+      border: 2px solid #1e293b;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .avatar-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .avatar-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
+    .avatar-yui { background: linear-gradient(135deg, #10b981, #059669); }
+    .avatar-new { 
+      background: #334155; 
+      border-style: dashed; 
+      border-color: #475569; 
+      color: #64748b;
+      font-size: 0.8rem;
+    }
+
+    /* ========== CARD ========== */
+    .card {
+      background: #111827;
+      border-radius: 20px;
+      padding: 18px 16px;
+      border: 1px solid #1e293b;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+      margin-bottom: 12px;
+    }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .section-label .dot {
+      width: 8px;
+      height: 8px;
+      background: #3b82f6;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* ========== TEXTAREA ========== */
+    textarea {
+      width: 100%;
+      height: 120px;
+      background: #0f172a;
+      border: 1.5px solid #1e293b;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 15px;
+      color: #f1f5f9;
+      resize: none;
+      outline: none;
+      transition: border-color 0.2s;
+      font-family: inherit;
+      line-height: 1.6;
+      -webkit-user-select: text;
+      user-select: text;
+    }
+
+    textarea:focus {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    }
+
+    textarea::placeholder {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 4px;
+      padding-right: 4px;
+    }
+
+    /* ========== BOT SELECT CARDS ========== */
+    .bot-select-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .bot-card {
+      background: #0f172a;
+      border: 2px solid #1e293b;
+      border-radius: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .bot-card:active {
+      transform: scale(0.98);
+    }
+
+    .bot-card.selected {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      background: #1a1f35;
+    }
+
+    .bot-card.selected-yuto {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+      background: #0f1a30;
+    }
+
+    .bot-card.selected-hina {
+      border-color: #ec4899;
+      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25);
+      background: #1a1025;
+    }
+
+    .bot-card.selected-yui {
+      border-color: #10b981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+      background: #0a1a15;
+    }
+
+    .bot-card-radio {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid #475569;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .bot-card.selected .bot-card-radio,
+    .bot-card.selected-yuto .bot-card-radio { border-color: #3b82f6; }
+    .bot-card.selected-hina .bot-card-radio { border-color: #ec4899; }
+    .bot-card.selected-yui .bot-card-radio { border-color: #10b981; }
+
+    .bot-card-radio-inner {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .bot-card.selected .bot-card-radio-inner,
+    .bot-card.selected-yuto .bot-card-radio-inner { background: #3b82f6; }
+    .bot-card.selected-hina .bot-card-radio-inner { background: #ec4899; }
+    .bot-card.selected-yui .bot-card-radio-inner { background: #10b981; }
+
+    .bot-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: white;
+      flex-shrink: 0;
+    }
+
+    .icon-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .icon-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
+    .icon-yui { background: linear-gradient(135deg, #10b981, #059669); }
+    .icon-new { 
+      background: #334155; 
+      border: 2px dashed #475569;
+      font-size: 0.7rem;
+    }
+
+    .bot-card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .bot-card-name {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      letter-spacing: 0.3px;
+    }
+
+    .bot-card-token {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .bot-card-status {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .status-active { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
+    .status-inactive { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
+    .status-pending { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+
+    /* Add more bot placeholder */
+    .add-bot-placeholder {
+      background: #0f172a;
+      border: 2px dashed #1e293b;
+      border-radius: 14px;
+      padding: 14px;
+      text-align: center;
+      color: #475569;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 4px;
+      touch-action: manipulation;
+    }
+
+    .add-bot-placeholder:active {
+      background: #1a1f2e;
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    /* ========== TOPIC SELECT ========== */
+    .topic-select-row {
+      margin-bottom: 6px;
+    }
+
+    .topic-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .topic-chip {
+      flex: 1;
+      min-width: 100px;
+      background: #0f172a;
+      border: 2px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px 14px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    .topic-chip:active {
+      transform: scale(0.96);
+    }
+
+    .topic-chip.selected {
+      border-color: #8b5cf6;
+      background: #1a1530;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+    }
+
+    .topic-chip-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #e2e8f0;
+    }
+
+    .topic-chip-id {
+      font-size: 0.7rem;
+      color: #64748b;
+      margin-top: 3px;
+    }
+
+    .topic-chip.selected .topic-chip-name {
+      color: #c4b5fd;
+    }
+    .topic-chip.selected .topic-chip-id {
+      color: #8b5cf6;
+    }
+
+    /* ========== SEND BUTTON ========== */
+    .send-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      border: none;
+      border-radius: 16px;
+      padding: 16px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 12px;
+      touch-action: manipulation;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .send-btn:active:not(:disabled) {
+      transform: scale(0.96);
+      background: linear-gradient(135deg, #1d4ed8, #4f46e5);
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      background: #334155;
+      box-shadow: none;
+      pointer-events: none;
+    }
+
+    .btn-icon {
+      font-size: 1.3rem;
+      pointer-events: none;
+    }
+
+    /* Ripple */
+    .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: ripple-anim 0.6s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes ripple-anim {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    /* ========== STATUS ========== */
+    .status-card {
+      background: #111827;
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1.5px solid #1e293b;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      margin-bottom: 12px;
+      min-height: 46px;
+      transition: all 0.3s;
+    }
+
+    .status-card.success {
+      border-color: #16a34a;
+      background: #0c1a12;
+    }
+    .status-card.success .status-text { color: #86efac; }
+
+    .status-card.error {
+      border-color: #dc2626;
+      background: #1a0c0c;
+    }
+    .status-card.error .status-text { color: #fca5a5; }
+
+    .status-card.warning {
+      border-color: #f59e0b;
+      background: #1a1406;
+    }
+    .status-card.warning .status-text { color: #fcd34d; }
+
+    .status-icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .status-text {
+      flex: 1;
+      line-height: 1.5;
+      word-break: break-word;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2.5px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ========== INFO FOOTER ========== */
+    .info-footer {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #475569;
+      padding: 6px 0;
+      line-height: 1.8;
+    }
+
+    .info-footer .highlight {
+      color: #8b5cf6;
+      font-weight: 600;
+    }
+
+    .selected-summary {
+      background: #0f172a;
+      border-radius: 10px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: #94a3b8;
+      border: 1px solid #1e293b;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .selected-summary strong {
+      color: #e2e8f0;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 360px) {
+      .bot-card { padding: 10px 12px; gap: 8px; }
+      .bot-card-icon { width: 36px; height: 36px; font-size: 1rem; }
+      .bot-card-name { font-size: 0.82rem; }
+      .topic-chip { padding: 10px; }
+      .send-btn { padding: 14px; font-size: 0.95rem; }
+    }
+
+    @media (min-width: 421px) {
+      body { align-items: center; }
+      .card { padding: 22px 20px; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  
+  <!-- ==================== HEADER ==================== -->
+  <div class="header">
+    <div class="header-icon">📨</div>
+    <h1>Topic Sender <span class="badge">MLBB</span></h1>
+    <p class="subtitle">@MLBBMCCTG • Multi-Bot Support</p>
+    <div class="bot-avatars">
+      <div class="bot-avatar avatar-yuto">Y</div>
+      <div class="bot-avatar avatar-hina">H</div>
+      <div class="bot-avatar avatar-yui">Y</div>
+      <div class="bot-avatar avatar-new">+</div>
+    </div>
+  </div>
+
+  <!-- ==================== MESSAGE CARD ==================== -->
+  <div class="card">
+    <div class="section-label">
+      <span class="dot"></span> ပို့မည့်စာသား
+    </div>
+    <textarea id="messageText" placeholder="ဒီမှာ စာရိုက်ပါ...&#10;ဥပမာ - မင်္ဂလာပါ အားလုံး ✨" maxlength="4096">ဟေး အားလုံးပဲ မင်္ဂလာပါ!
+Auto message from Topic Bot ✨</textarea>
+    <div class="char-count" id="charCount">0 / 4096</div>
+  </div>
+
+  <!-- ==================== BOT SELECTION CARD ==================== -->
+  <div class="card">
+    <div class="section-label">
+      <span class="dot"></span> 🤖 Bot ရွေးပါ
+    </div>
+    <div class="bot-select-cards" id="botSelectCards">
+      <!-- Bot cards will be generated by JavaScript -->
+    </div>
+    <!-- နောက်ထပ် Bot ထည့်ရန်နေရာ -->
+    <div class="add-bot-placeholder" id="addBotPlaceholder">
+      <span>➕</span> နောက်ထပ် Bot ထည့်ရန် (Coming Soon)
+    </div>
+  </div>
+
+  <!-- ==================== TOPIC SELECTION CARD ==================== -->
+  <div class="card">
+    <div class="section-label">
+      <span class="dot"></span> 🗂️ Topic ရွေးပါ
+    </div>
+    <div class="topic-chips" id="topicChips">
+      <!-- Topic chips will be generated by JavaScript -->
+    </div>
+    <div class="selected-summary" id="selectedSummary">
+      <span>📌 <strong>@MLBBMCCTG</strong></span>
+      <span>Topic: <strong id="summaryTopic">310661</strong></span>
+      <span>Bot: <strong id="summaryBot">Yuto</strong></span>
+    </div>
+  </div>
+
+  <!-- ==================== SEND BUTTON ==================== -->
+  <button id="sendBtn" class="send-btn" type="button">
+    <span class="btn-icon">📤</span> <span id="sendBtnText">ပို့မည်</span>
+  </button>
+
+  <!-- ==================== STATUS ==================== -->
+  <div id="statusCard" class="status-card">
+    <span class="status-icon">💬</span>
+    <span class="status-text" id="statusText">အဆင်သင့်ဖြစ်ပါပြီ • Bot ရွေးပါ • Topic ရွေးပါ</span>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <div class="info-footer">
+    <span class="highlight">⚠️ Bot များ Admin ဖြစ်ရန်လိုအပ်ပါသည်</span><br>
+    Topic 1 = General (auto-detect) | Topic 310661<br>
+    <span style="color:#64748b;">Yuto • Hina • Yui | Bot ကို Long Press နှိပ်၍ စမ်းသပ်နိုင်ပါသည်</span>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    console.log("🚀 Script started");
+    
+    // ==================== CONFIGURATION ====================
+    const BOT_LIST = [
+      {
+        id: "yuto",
+        name: "Yuto",
+        emoji: "🔵",
+        token: "8759285648:AAHqmcMPE4tPciixG-IzPCOVIl7E1XBhm6E",
+        color: "#3b82f6",
+        bgClass: "selected-yuto",
+        iconClass: "icon-yuto",
+        avatarClass: "avatar-yuto"
+      },
+      {
+        id: "hina",
+        name: "Hina",
+        emoji: "🌸",
+        token: "8058558723:AAG0Cwgw4Z3bdOGpkEGgBeNKSdNBbsXUuwY",
+        color: "#ec4899",
+        bgClass: "selected-hina",
+        iconClass: "icon-hina",
+        avatarClass: "avatar-hina"
+      },
+      {
+        id: "yui",
+        name: "Yui",
+        emoji: "🍀",
+        token: "8728656019:AAES3bV3_5yLTm3a0lvE1dEVWBnyE6KQAwM",
+        color: "#10b981",
+        bgClass: "selected-yui",
+        iconClass: "icon-yui",
+        avatarClass: "avatar-yui"
+      }
+      // ====================================================
+      // 🔽 နောက်ထပ် Bot ထည့်ချင်ရင် ဒီအောက်မှာ ထည့်ပါ
+      // ====================================================
+    ];
+
+    const TOPIC_LIST = [
+      { id: "310661", name: "Topic 310661", emoji: "📢" },
+      { id: "1", name: "General", emoji: "💬", isGeneral: true }
+    ];
+
+    const GROUP_USERNAME = "@MLBBMCCTG";
+
+    // ==================== STATE ====================
+    let selectedBotIndex = 0;
+    let selectedTopicId = TOPIC_LIST[0].id;
+    let isSending = false;
+
+    // ==================== DOM ELEMENTS ====================
+    const messageTextarea = document.getElementById("messageText");
+    const sendBtn = document.getElementById("sendBtn");
+    const sendBtnText = document.getElementById("sendBtnText");
+    const statusCard = document.getElementById("statusCard");
+    const statusText = document.getElementById("statusText");
+    const statusIcon = document.querySelector(".status-icon");
+    const charCount = document.getElementById("charCount");
+    const botSelectCards = document.getElementById("botSelectCards");
+    const topicChips = document.getElementById("topicChips");
+    const summaryTopic = document.getElementById("summaryTopic");
+    const summaryBot = document.getElementById("summaryBot");
+    const addBotPlaceholder = document.getElementById("addBotPlaceholder");
+
+    console.log("✅ DOM elements loaded");
+    console.log("sendBtn:", sendBtn);
+
+    // ==================== RENDER BOT CARDS ====================
+    function renderBotCards() {
+      botSelectCards.innerHTML = "";
+      
+      BOT_LIST.forEach((bot, index) => {
+        const card = document.createElement("div");
+        card.className = `bot-card ${index === selectedBotIndex ? 'selected ' + bot.bgClass : ''}`;
+        card.setAttribute("data-bot-index", index);
+        card.innerHTML = `
+          <div class="bot-card-radio">
+            <div class="bot-card-radio-inner"></div>
+          </div>
+          <div class="bot-card-icon ${bot.iconClass}">${bot.emoji}</div>
+          <div class="bot-card-info">
+            <div class="bot-card-name">${bot.name}</div>
+            <div class="bot-card-token">${bot.token.substring(0, 20)}...</div>
+          </div>
+          <div class="bot-card-status status-active" title="Active"></div>
+        `;
+        
+        // Use both click and touch events
+        card.addEventListener("click", function(e) {
+          e.preventDefault();
+          console.log("Bot card clicked:", index);
+          selectBot(index);
+        });
+        
+        card.addEventListener("touchend", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("Bot card touched:", index);
+          selectBot(index);
+        });
+        
+        botSelectCards.appendChild(card);
+      });
+    }
+
+    function selectBot(index) {
+      console.log("selectBot called:", index);
+      selectedBotIndex = index;
+      
+      const cards = botSelectCards.querySelectorAll(".bot-card");
+      cards.forEach((card, i) => {
+        card.className = "bot-card";
+        if (i === index) {
+          card.classList.add("selected");
+          card.classList.add(BOT_LIST[i].bgClass);
+        }
+      });
+      
+      updateSummary();
+    }
+
+    // ==================== RENDER TOPIC CHIPS ====================
+    function renderTopicChips() {
+      topicChips.innerHTML = "";
+      
+      TOPIC_LIST.forEach((topic) => {
+        const chip = document.createElement("div");
+        chip.className = `topic-chip ${topic.id === selectedTopicId ? 'selected' : ''}`;
+        chip.setAttribute("data-topic-id", topic.id);
+        chip.innerHTML = `
+          <div class="topic-chip-name">${topic.emoji} ${topic.name}</div>
+          <div class="topic-chip-id">ID: ${topic.id} ${topic.isGeneral ? '(General)' : ''}</div>
+        `;
+        
+        chip.addEventListener("click", function(e) {
+          e.preventDefault();
+          console.log("Topic chip clicked:", topic.id);
+          selectTopic(topic.id);
+        });
+        
+        chip.addEventListener("touchend", function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log("Topic chip touched:", topic.id);
+          selectTopic(topic.id);
+        });
+        
+        topicChips.appendChild(chip);
+      });
+    }
+
+    function selectTopic(topicId) {
+      console.log("selectTopic called:", topicId);
+      selectedTopicId = topicId;
+      
+      const chips = topicChips.querySelectorAll(".topic-chip");
+      chips.forEach(chip => {
+        chip.classList.remove("selected");
+        if (chip.getAttribute("data-topic-id") === topicId) {
+          chip.classList.add("selected");
+        }
+      });
+      
+      updateSummary();
+    }
+
+    // ==================== UPDATE SUMMARY ====================
+    function updateSummary() {
+      summaryBot.textContent = BOT_LIST[selectedBotIndex].name;
+      summaryTopic.textContent = selectedTopicId;
+      summaryBot.style.color = BOT_LIST[selectedBotIndex].color;
+    }
+
+    // ==================== CHARACTER COUNT ====================
+    function updateCharCount() {
+      const len = messageTextarea.value.length;
+      charCount.textContent = len + " / 4096";
+      if (len > 4000) charCount.style.color = "#fbbf24";
+      else if (len > 4090) charCount.style.color = "#ef4444";
+      else charCount.style.color = "#64748b";
+    }
+    messageTextarea.addEventListener("input", updateCharCount);
+
+    // ==================== STATUS ====================
+    function setStatus(text, type = "info") {
+      statusText.textContent = text;
+      statusCard.className = "status-card";
+      
+      if (type === "success") {
+        statusCard.classList.add("success");
+        statusIcon.textContent = "✅";
+      } else if (type === "error") {
+        statusCard.classList.add("error");
+        statusIcon.textContent = "❌";
+      } else if (type === "warning") {
+        statusCard.classList.add("warning");
+        statusIcon.textContent = "⚠️";
+      } else if (type === "loading") {
+        statusIcon.innerHTML = '<span class="spinner"></span>';
+      } else {
+        statusIcon.textContent = "💬";
+      }
+    }
+
+    // ==================== LOADING ====================
+    function setLoading(loading) {
+      isSending = loading;
+      if (loading) {
+        sendBtn.disabled = true;
+        sendBtnText.innerHTML = '<span class="spinner"></span> ပို့နေသည်...';
+      } else {
+        sendBtn.disabled = false;
+        sendBtnText.innerHTML = 'ပို့မည်';
+      }
+    }
+
+    // ==================== SEND MESSAGE ====================
+    async function sendMessage() {
+      console.log("📤 sendMessage called");
+      
+      if (isSending) {
+        console.log("⚠️ Already sending, ignoring");
+        return;
+      }
+      
+      const message = messageTextarea.value.trim();
+      
+      if (message === "") {
+        console.log("❌ Empty message");
+        setStatus("စာသားထည့်သွင်းပါ။", "error");
+        messageTextarea.focus();
+        messageTextarea.style.borderColor = "#ef4444";
+        setTimeout(() => { messageTextarea.style.borderColor = "#1e293b"; }, 1500);
+        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+        return;
+      }
+
+      const bot = BOT_LIST[selectedBotIndex];
+      const token = bot.token;
+      const topicId = selectedTopicId;
+      const apiUrl = `https://api.telegram.org/bot${token}/sendMessage`;
+
+      setLoading(true);
+      
+      const topicLabel = topicId === "1" ? "General" : `Topic ${topicId}`;
+      setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပို့နေသည်...`, "loading");
+
+      console.log("🚀 Sending...");
+      console.log("Bot:", bot.name);
+      console.log("Topic:", topicId);
+      console.log("Message:", message.substring(0, 50) + "...");
+
+      try {
+        const formData = new URLSearchParams();
+        formData.append("chat_id", GROUP_USERNAME);
+        formData.append("text", message);
+        
+        if (topicId !== "1") {
+          formData.append("message_thread_id", topicId);
+        }
+        
+        formData.append("parse_mode", "HTML");
+
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString()
+        });
+
+        const data = await response.json();
+        console.log("📬 Response:", data);
+
+        if (data.ok) {
+          const sentTo = topicId === "1" ? "General Topic" : `Topic ${topicId}`;
+          setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${sentTo} သို့ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
+          if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+        } else {
+          const errorDesc = data.description || "အမှားရှိနေပါသည်";
+          setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
+          if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
+          console.error("Telegram API Error:", data);
+        }
+      } catch (networkError) {
+        setStatus(`🌐 ${bot.name}: အင်တာနက် ချိတ်ဆက်မှု စစ်ဆေးပါ`, "error");
+        console.error("Fetch Error:", networkError);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    // ==================== TEST BOT ====================
+    async function testBot(index) {
+      const bot = BOT_LIST[index];
+      const apiUrl = `https://api.telegram.org/bot${bot.token}/getMe`;
+      
+      setStatus(`${bot.emoji} ${bot.name} စမ်းသပ်နေသည်...`, "loading");
+      
+      try {
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        
+        if (data.ok) {
+          setStatus(`✅ ${bot.emoji} ${bot.name} (@${data.result.username}) - အလုပ်လုပ်ပါသည်`, "success");
+          updateBotStatusDot(index, true);
+        } else {
+          setStatus(`❌ ${bot.emoji} ${bot.name} - Token မှားနေပါသည်`, "error");
+          updateBotStatusDot(index, false);
+        }
+      } catch (error) {
+        setStatus(`🌐 ${bot.emoji} ${bot.name} - စစ်ဆေး၍မရပါ`, "error");
+        updateBotStatusDot(index, false);
+      }
+    }
+
+    function updateBotStatusDot(index, isActive) {
+      const cards = botSelectCards.querySelectorAll(".bot-card");
+      if (cards[index]) {
+        const statusDot = cards[index].querySelector(".bot-card-status");
+        statusDot.className = "bot-card-status";
+        statusDot.classList.add(isActive ? "status-active" : "status-inactive");
+        statusDot.title = isActive ? "Active" : "Inactive";
+      }
+    }
+
+    // ==================== EVENT LISTENERS ====================
+    
+    // ✅ ပို့မည် ခလုတ် - Click Event
+    sendBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("🖱️ Send button CLICKED");
+      sendMessage();
+    });
+
+    // ✅ ပို့မည် ခလုတ် - Touch Event (for mobile)
+    sendBtn.addEventListener("touchend", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("👆 Send button TOUCHED");
+      sendMessage();
+    });
+
+    // Prevent touchstart from causing issues
+    sendBtn.addEventListener("touchstart", function(e) {
+      e.preventDefault();
+      console.log("👆 Send button touchstart");
+    });
+
+    // Keyboard shortcut
+    messageTextarea.addEventListener("keydown", function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Long press bot card to test
+    let longPressTimer;
+    botSelectCards.addEventListener("touchstart", function(e) {
+      const card = e.target.closest(".bot-card");
+      if (!card) return;
+      
+      const index = parseInt(card.getAttribute("data-bot-index"));
+      longPressTimer = setTimeout(() => {
+        testBot(index);
+        if (navigator.vibrate) navigator.vibrate(50);
+      }, 800);
+    });
+    
+    botSelectCards.addEventListener("touchend", function() {
+      clearTimeout(longPressTimer);
+    });
+    
+    botSelectCards.addEventListener("touchmove", function() {
+      clearTimeout(longPressTimer);
+    });
+
+    // Double click to test bot (desktop)
+    botSelectCards.addEventListener("dblclick", function(e) {
+      const card = e.target.closest(".bot-card");
+      if (!card) return;
+      const index = parseInt(card.getAttribute("data-bot-index"));
+      testBot(index);
+    });
+
+    // Add bot placeholder click
+    addBotPlaceholder.addEventListener("click", function(e) {
+      e.preventDefault();
+      setStatus("💡 Bot အသစ်ထည့်ရန် Code ထဲက BOT_LIST Array တွင် Object အသစ်ထည့်ပါ", "warning");
+    });
+
+    // ==================== INITIAL SETUP ====================
+    function init() {
+      console.log("🔧 Initializing...");
+      renderBotCards();
+      renderTopicChips();
+      updateCharCount();
+      updateSummary();
+      setStatus("အဆင်သင့်ဖြစ်ပါပြီ • ပို့မည် ခလုတ်ကို နှိပ်ပါ", "info");
+      
+      console.log("✅ MLBB Topic Sender Ready");
+      console.log("🤖 Bots:", BOT_LIST.map(b => b.name).join(", "));
+      console.log("📌 Default Bot:", BOT_LIST[selectedBotIndex].name);
+      console.log("📌 Default Topic:", selectedTopicId);
+      console.log("📤 Send button ready:", sendBtn);
+    }
+
+    init();
+  })();
+</script>
+</body>
+</html>
