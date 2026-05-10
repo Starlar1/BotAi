@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f172a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>MLBB Topic Sender | Photo + Message</title>
+  <title>MLBB Topic Sender</title>
   <style>
     * {
       margin: 0;
@@ -17,180 +17,165 @@
 
     body {
       background: #0a0f1c;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       min-height: 100vh;
       min-height: 100dvh;
       display: flex;
-      align-items: flex-start;
+      align-items: center;
       justify-content: center;
-      padding: 16px 12px 30px;
+      padding: 16px 12px;
       margin: 0;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
+      overflow: hidden;
       touch-action: manipulation;
     }
 
     .container {
       width: 100%;
-      max-width: 440px;
+      max-width: 420px;
       margin: 0 auto;
     }
 
     /* ========== HEADER ========== */
     .header {
       text-align: center;
-      margin-bottom: 14px;
-      padding-top: 8px;
+      margin-bottom: 16px;
     }
 
     .header-icon {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      border-radius: 20px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 30px;
-      margin: 0 auto 10px;
-      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.35);
+      font-size: 26px;
+      margin: 0 auto 8px;
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
     }
 
     .header h1 {
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 800;
       color: #f1f5f9;
-      letter-spacing: -0.3px;
     }
 
-    .header .badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #8b5cf6, #6366f1);
-      font-size: 0.7rem;
-      padding: 4px 12px;
+    /* ========== MAIN CARD (Compact) ========== */
+    .main-card {
+      background: #111827;
       border-radius: 20px;
-      color: white;
-      font-weight: 700;
-      margin-left: 6px;
-      vertical-align: middle;
-      letter-spacing: 0.5px;
+      padding: 16px;
+      border: 1px solid #1e293b;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+      margin-bottom: 12px;
     }
 
-    .subtitle {
-      color: #94a3b8;
-      font-size: 0.78rem;
-      margin-top: 3px;
-      font-weight: 500;
-    }
-
-    .bot-avatars {
+    /* ========== SELECT BUTTONS (Compact Bar) ========== */
+    .select-row {
       display: flex;
-      justify-content: center;
-      gap: 6px;
-      margin-top: 10px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
-    .bot-avatar {
+    .select-btn {
+      flex: 1;
+      background: #0f172a;
+      border: 1.5px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      touch-action: manipulation;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .select-btn:active {
+      transform: scale(0.97);
+      border-color: #3b82f6;
+    }
+
+    .select-btn .btn-icon {
+      font-size: 1.2rem;
       width: 32px;
       height: 32px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .select-btn .btn-icon.bot { background: #1e3a5f; }
+    .select-btn .btn-icon.topic { background: #2d1b4e; }
+
+    .select-btn .btn-info {
+      flex: 1;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .select-btn .btn-label {
       font-size: 0.65rem;
-      font-weight: 700;
-      color: white;
-      border: 2px solid #1e293b;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    }
-
-    .avatar-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-    .avatar-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
-    .avatar-yui { background: linear-gradient(135deg, #10b981, #059669); }
-    .avatar-new { 
-      background: #334155; 
-      border-style: dashed; 
-      border-color: #475569; 
       color: #64748b;
-      font-size: 0.8rem;
-    }
-
-    /* ========== CARD ========== */
-    .card {
-      background: #111827;
-      border-radius: 20px;
-      padding: 18px 16px;
-      border: 1px solid #1e293b;
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
-      margin-bottom: 12px;
-    }
-
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      margin-bottom: 10px;
       text-transform: uppercase;
-      letter-spacing: 0.8px;
+      letter-spacing: 0.5px;
     }
 
-    .section-label .dot {
-      width: 8px;
-      height: 8px;
-      background: #3b82f6;
-      border-radius: 50%;
-      display: inline-block;
+    .select-btn .btn-value {
+      font-size: 0.9rem;
+      color: #f1f5f9;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* ========== IMAGE UPLOAD AREA ========== */
-    .image-upload-area {
-      margin-bottom: 14px;
+    .select-btn .btn-arrow {
+      color: #475569;
+      font-size: 1rem;
     }
 
+    /* ========== IMAGE DROPZONE (Compact) ========== */
     .image-dropzone {
       background: #0f172a;
-      border: 2px dashed #1e293b;
-      border-radius: 14px;
-      padding: 20px;
+      border: 1.5px dashed #1e293b;
+      border-radius: 12px;
+      padding: 10px;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
+      transition: all 0.2s;
       touch-action: manipulation;
-      min-height: 80px;
+      margin-bottom: 10px;
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
 
     .image-dropzone:active {
       border-color: #3b82f6;
-      background: #1a1f35;
     }
 
     .image-dropzone.has-image {
       border-style: solid;
       border-color: #22c55e;
-      padding: 8px;
-      background: #0a1a12;
+      padding: 6px;
     }
 
     .dropzone-placeholder {
       color: #475569;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       display: flex;
-      flex-direction: column;
       align-items: center;
       gap: 6px;
       pointer-events: none;
-    }
-
-    .dropzone-placeholder .icon {
-      font-size: 2rem;
     }
 
     .image-preview-container {
@@ -209,29 +194,28 @@
 
     .image-preview {
       width: 100%;
-      max-height: 200px;
+      max-height: 140px;
       object-fit: contain;
-      border-radius: 10px;
+      border-radius: 8px;
       display: block;
     }
 
     .remove-image-btn {
       position: absolute;
-      top: 8px;
-      right: 8px;
+      top: 6px;
+      right: 6px;
       background: #ef4444;
       color: white;
       border: none;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      font-size: 16px;
+      width: 26px;
+      height: 26px;
+      font-size: 14px;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 5;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
       touch-action: manipulation;
     }
 
@@ -240,168 +224,189 @@
       transform: scale(0.9);
     }
 
-    .image-info {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 6px;
-      font-size: 0.7rem;
-      color: #64748b;
-      padding: 0 4px;
-    }
-
-    .image-info .file-size {
-      color: #22c55e;
-    }
-
-    /* ========== TEXTAREA ========== */
+    /* ========== TEXTAREA (Compact) ========== */
     textarea {
       width: 100%;
-      height: 100px;
+      height: 80px;
       background: #0f172a;
       border: 1.5px solid #1e293b;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 14px;
       color: #f1f5f9;
       resize: none;
       outline: none;
-      transition: border-color 0.2s;
       font-family: inherit;
-      line-height: 1.6;
+      line-height: 1.5;
       -webkit-user-select: text;
       user-select: text;
     }
 
     textarea:focus {
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+      box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
     }
 
     textarea::placeholder {
       color: #475569;
-      font-size: 14px;
     }
 
     .char-count {
       text-align: right;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
       color: #64748b;
       margin-top: 4px;
-      padding-right: 4px;
     }
 
-    .send-preview {
-      background: #0f172a;
-      border-radius: 10px;
+    /* ========== SEND BUTTON ========== */
+    .send-btn {
+      width: 100%;
+      background: linear-gradient(135deg, #2563eb, #6366f1);
+      border: none;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      box-shadow: 0 6px 20px rgba(37,99,235,0.4);
+      touch-action: manipulation;
+      margin-bottom: 10px;
+    }
+
+    .send-btn:active:not(:disabled) {
+      transform: scale(0.97);
+      background: #1d4ed8;
+    }
+
+    .send-btn:disabled {
+      opacity: 0.5;
+      background: #334155;
+      pointer-events: none;
+    }
+
+    /* ========== STATUS (Compact) ========== */
+    .status-bar {
+      background: #111827;
+      border-radius: 12px;
       padding: 10px 14px;
-      margin-top: 10px;
-      font-size: 0.75rem;
-      color: #94a3b8;
       border: 1px solid #1e293b;
+      font-size: 0.78rem;
+      color: #94a3b8;
       display: flex;
       align-items: center;
       gap: 8px;
-      flex-wrap: wrap;
     }
 
-    .send-preview .preview-badge {
-      background: #1e293b;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-      font-size: 0.7rem;
+    .status-bar.success { border-color: #16a34a; color: #86efac; }
+    .status-bar.error { border-color: #dc2626; color: #fca5a5; }
+    .status-bar.loading { border-color: #f59e0b; color: #fcd34d; }
+
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
     }
 
-    .preview-badge.has-photo { background: #14532d; color: #86efac; }
-    .preview-badge.has-text { background: #1e3a5f; color: #93c5fd; }
-    .preview-badge.empty { background: #3b1c1c; color: #fca5a5; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ========== BOT SELECT CARDS ========== */
-    .bot-select-cards {
+    /* ========== MODAL OVERLAY ========== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-sheet {
+      background: #111827;
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      max-width: 420px;
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 10px 16px 30px;
+      animation: slideUp 0.3s ease;
+      border-top: 1px solid #1e293b;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .modal-handle {
+      width: 40px;
+      height: 4px;
+      background: #334155;
+      border-radius: 2px;
+      margin: 0 auto 14px;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .modal-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 8px;
     }
 
-    .bot-card {
+    .modal-item {
       background: #0f172a;
       border: 2px solid #1e293b;
       border-radius: 14px;
-      padding: 12px 14px;
+      padding: 14px;
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.25s;
-      position: relative;
-      overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
+      transition: all 0.2s;
       touch-action: manipulation;
     }
 
-    .bot-card:active {
+    .modal-item:active {
       transform: scale(0.98);
     }
 
-    .bot-card.selected {
+    .modal-item.selected {
       border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
       background: #1a1f35;
     }
 
-    .bot-card.selected-yuto {
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-      background: #0f1a30;
-    }
+    .modal-item.selected-bot-yuto { border-color: #3b82f6; }
+    .modal-item.selected-bot-hina { border-color: #ec4899; }
+    .modal-item.selected-bot-yui { border-color: #10b981; }
 
-    .bot-card.selected-hina {
-      border-color: #ec4899;
-      box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.25);
-      background: #1a1025;
-    }
-
-    .bot-card.selected-yui {
-      border-color: #10b981;
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
-      background: #0a1a15;
-    }
-
-    .bot-card-radio {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 2px solid #475569;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .bot-card.selected .bot-card-radio,
-    .bot-card.selected-yuto .bot-card-radio { border-color: #3b82f6; }
-    .bot-card.selected-hina .bot-card-radio { border-color: #ec4899; }
-    .bot-card.selected-yui .bot-card-radio { border-color: #10b981; }
-
-    .bot-card-radio-inner {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: transparent;
-      transition: all 0.2s;
-    }
-
-    .bot-card.selected .bot-card-radio-inner,
-    .bot-card.selected-yuto .bot-card-radio-inner { background: #3b82f6; }
-    .bot-card.selected-hina .bot-card-radio-inner { background: #ec4899; }
-    .bot-card.selected-yui .bot-card-radio-inner { background: #10b981; }
-
-    .bot-card-icon {
-      width: 42px;
-      height: 42px;
+    .modal-item-icon {
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -412,252 +417,54 @@
       flex-shrink: 0;
     }
 
-    .icon-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-    .icon-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
-    .icon-yui { background: linear-gradient(135deg, #10b981, #059669); }
+    .icon-bot-yuto { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+    .icon-bot-hina { background: linear-gradient(135deg, #ec4899, #db2777); }
+    .icon-bot-yui { background: linear-gradient(135deg, #10b981, #059669); }
+    .icon-topic { background: #2d1b4e; }
+    .icon-topic-general { background: #1e3a5f; }
 
-    .bot-card-info {
+    .modal-item-info {
       flex: 1;
       min-width: 0;
     }
 
-    .bot-card-name {
+    .modal-item-name {
       font-size: 0.9rem;
       font-weight: 700;
       color: #f1f5f9;
-      letter-spacing: 0.3px;
     }
 
-    .bot-card-token {
+    .modal-item-sub {
       font-size: 0.7rem;
       color: #64748b;
-      margin-top: 2px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .bot-card-status {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .status-active { background: #22c55e; box-shadow: 0 0 6px #22c55e; }
-    .status-inactive { background: #ef4444; box-shadow: 0 0 6px #ef4444; }
-
-    /* ========== TOPIC SELECT ========== */
-    .topic-chips {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .topic-chip {
-      flex: 1;
-      min-width: 100px;
-      background: #0f172a;
-      border: 2px solid #1e293b;
-      border-radius: 12px;
-      padding: 12px 14px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      touch-action: manipulation;
-    }
-
-    .topic-chip:active {
-      transform: scale(0.96);
-    }
-
-    .topic-chip.selected {
-      border-color: #8b5cf6;
-      background: #1a1530;
-      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-    }
-
-    .topic-chip-name {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #e2e8f0;
-    }
-
-    .topic-chip-id {
-      font-size: 0.7rem;
-      color: #64748b;
-      margin-top: 3px;
-    }
-
-    .topic-chip.selected .topic-chip-name { color: #c4b5fd; }
-    .topic-chip.selected .topic-chip-id { color: #8b5cf6; }
-
-    /* ========== SEND BUTTON ========== */
-    .send-btn {
-      width: 100%;
-      background: linear-gradient(135deg, #2563eb, #6366f1);
-      border: none;
-      border-radius: 16px;
-      padding: 16px;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      cursor: pointer;
-      transition: all 0.25s;
-      letter-spacing: 0.5px;
-      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
-      -webkit-tap-highlight-color: transparent;
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 12px;
-      touch-action: manipulation;
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    .send-btn:active:not(:disabled) {
-      transform: scale(0.96);
-      background: linear-gradient(135deg, #1d4ed8, #4f46e5);
-    }
-
-    .send-btn:disabled {
-      opacity: 0.5;
-      background: #334155;
-      box-shadow: none;
-      pointer-events: none;
-    }
-
-    .btn-icon { font-size: 1.3rem; pointer-events: none; }
-
-    /* ========== STATUS ========== */
-    .status-card {
-      background: #111827;
-      border-radius: 14px;
-      padding: 12px 14px;
-      border: 1.5px solid #1e293b;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-size: 0.82rem;
-      color: #cbd5e1;
-      margin-bottom: 12px;
-      min-height: 46px;
-      transition: all 0.3s;
-    }
-
-    .status-card.success { border-color: #16a34a; background: #0c1a12; }
-    .status-card.success .status-text { color: #86efac; }
-    .status-card.error { border-color: #dc2626; background: #1a0c0c; }
-    .status-card.error .status-text { color: #fca5a5; }
-    .status-card.warning { border-color: #f59e0b; background: #1a1406; }
-    .status-card.warning .status-text { color: #fcd34d; }
-
-    .status-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
-    .status-text { flex: 1; line-height: 1.5; word-break: break-word; }
-
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2.5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: white;
-      animation: spin 0.7s linear infinite;
-      flex-shrink: 0;
-    }
-
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    /* ========== SELECTED SUMMARY ========== */
-    .selected-summary {
-      background: #0f172a;
-      border-radius: 10px;
-      padding: 10px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 0.78rem;
-      color: #94a3b8;
-      border: 1px solid #1e293b;
-      margin-top: 8px;
-      flex-wrap: wrap;
-    }
-
-    .selected-summary strong { color: #e2e8f0; }
-
-    /* ========== PROGRESS BAR ========== */
-    .progress-bar-container {
+    .modal-item-check {
+      color: #22c55e;
+      font-size: 1.2rem;
       display: none;
+    }
+
+    .modal-item.selected .modal-item-check {
+      display: block;
+    }
+
+    .modal-done-btn {
       width: 100%;
-      height: 4px;
-      background: #1e293b;
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-      width: 0%;
-      transition: width 0.3s;
-      border-radius: 2px;
-    }
-
-    /* ========== INFO FOOTER ========== */
-    .info-footer {
-      text-align: center;
-      font-size: 0.7rem;
-      color: #475569;
-      padding: 6px 0;
-      line-height: 1.8;
-    }
-
-    .info-footer .highlight { color: #8b5cf6; font-weight: 600; }
-
-    .add-bot-placeholder {
-      background: #0f172a;
-      border: 2px dashed #1e293b;
+      background: #2563eb;
+      border: none;
       border-radius: 14px;
       padding: 14px;
-      text-align: center;
-      color: #475569;
-      font-size: 0.8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
       cursor: pointer;
-      transition: all 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-top: 4px;
+      margin-top: 14px;
       touch-action: manipulation;
     }
 
-    .add-bot-placeholder:active {
-      background: #1a1f2e;
-      border-color: #3b82f6;
-      color: #3b82f6;
-    }
-
-    /* ========== RESPONSIVE ========== */
-    @media (max-width: 360px) {
-      .bot-card { padding: 10px 12px; gap: 8px; }
-      .bot-card-icon { width: 36px; height: 36px; font-size: 1rem; }
-      .bot-card-name { font-size: 0.82rem; }
-      .topic-chip { padding: 10px; }
-      .send-btn { padding: 14px; font-size: 0.95rem; }
-      textarea { height: 80px; }
-    }
-
-    @media (min-width: 421px) {
-      body { align-items: center; }
-      .card { padding: 22px 20px; }
+    .modal-done-btn:active {
+      background: #1d4ed8;
     }
   </style>
 </head>
@@ -667,693 +474,396 @@
   <!-- ==================== HEADER ==================== -->
   <div class="header">
     <div class="header-icon">📨</div>
-    <h1>Topic Sender <span class="badge">MLBB</span></h1>
-    <p class="subtitle">@MLBBMCCTG • Photo + Message</p>
-    <div class="bot-avatars">
-      <div class="bot-avatar avatar-yuto">Y</div>
-      <div class="bot-avatar avatar-hina">H</div>
-      <div class="bot-avatar avatar-yui">Y</div>
-      <div class="bot-avatar avatar-new">+</div>
-    </div>
+    <h1>MLBB Topic Sender</h1>
   </div>
 
-  <!-- ==================== IMAGE + MESSAGE CARD ==================== -->
-  <div class="card">
-    <div class="section-label">
-      <span class="dot"></span> 📸 ပုံနှင့် စာသား
-    </div>
+  <!-- ==================== MAIN CARD ==================== -->
+  <div class="main-card">
     
-    <!-- Image Upload -->
-    <div class="image-upload-area">
-      <div class="image-dropzone" id="imageDropzone">
-        <div class="dropzone-placeholder">
-          <span class="icon">🖼️</span>
-          <span>ပုံထည့်ရန် ဒီမှာနှိပ်ပါ</span>
-          <span style="font-size:0.7rem;">(မထည့်လည်းရပါသည်)</span>
-        </div>
-        <div class="image-preview-container" id="imagePreviewContainer">
-          <img id="imagePreview" class="image-preview" src="" alt="Preview">
-          <button class="remove-image-btn" id="removeImageBtn">✕</button>
-        </div>
+    <!-- Bot + Topic Select Row -->
+    <div class="select-row">
+      <div class="select-btn" id="botSelectBtn">
+        <span class="btn-icon bot">🤖</span>
+        <span class="btn-info">
+          <span class="btn-label">Bot</span>
+          <span class="btn-value" id="botSelectValue">Yuto</span>
+        </span>
+        <span class="btn-arrow">›</span>
       </div>
-      <div class="image-info" id="imageInfo" style="display:none;">
-        <span>📷</span>
-        <span id="imageFileName">-</span>
-        <span class="file-size" id="imageFileSize">-</span>
+      <div class="select-btn" id="topicSelectBtn">
+        <span class="btn-icon topic">#</span>
+        <span class="btn-info">
+          <span class="btn-label">Topic</span>
+          <span class="btn-value" id="topicSelectValue">310661</span>
+        </span>
+        <span class="btn-arrow">›</span>
       </div>
-      <input type="file" id="imageInput" accept="image/*" style="display:none;">
     </div>
 
-    <!-- Message Text -->
-    <textarea id="messageText" placeholder="စာသားထည့်ပါ (ပုံမထည့်ရင် စာပဲပို့မည်)..." maxlength="4096">ဟေး အားလုံးပဲ မင်္ဂလာပါ! ✨</textarea>
+    <!-- Image Dropzone -->
+    <div class="image-dropzone" id="imageDropzone">
+      <div class="dropzone-placeholder">
+        <span>🖼️</span> ပုံထည့်ရန်နှိပ်ပါ
+      </div>
+      <div class="image-preview-container" id="imagePreviewContainer">
+        <img id="imagePreview" class="image-preview" src="" alt="Preview">
+        <button class="remove-image-btn" id="removeImageBtn">✕</button>
+      </div>
+    </div>
+    <input type="file" id="imageInput" accept="image/*" style="display:none;">
+
+    <!-- Message Textarea -->
+    <textarea id="messageText" placeholder="စာရိုက်ပါ..." maxlength="4096"></textarea>
     <div class="char-count" id="charCount">0 / 4096</div>
-
-    <!-- Send Preview -->
-    <div class="send-preview" id="sendPreview">
-      <span>📤 ပို့မည့်အရာ:</span>
-      <span class="preview-badge has-text" id="previewTextBadge">စာ</span>
-      <span class="preview-badge has-photo" id="previewPhotoBadge" style="display:none;">ပုံ</span>
-      <span class="preview-badge empty" id="previewEmptyBadge">မရှိသေး</span>
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="progress-bar-container" id="progressBarContainer">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
-  </div>
-
-  <!-- ==================== BOT SELECTION CARD ==================== -->
-  <div class="card">
-    <div class="section-label">
-      <span class="dot"></span> 🤖 Bot ရွေးပါ
-    </div>
-    <div class="bot-select-cards" id="botSelectCards"></div>
-    <div class="add-bot-placeholder" id="addBotPlaceholder">
-      <span>➕</span> နောက်ထပ် Bot ထည့်ရန် (Coming Soon)
-    </div>
-  </div>
-
-  <!-- ==================== TOPIC SELECTION CARD ==================== -->
-  <div class="card">
-    <div class="section-label">
-      <span class="dot"></span> 🗂️ Topic ရွေးပါ
-    </div>
-    <div class="topic-chips" id="topicChips"></div>
-    <div class="selected-summary" id="selectedSummary">
-      <span>📌 <strong>@MLBBMCCTG</strong></span>
-      <span>Topic: <strong id="summaryTopic">310661</strong></span>
-      <span>Bot: <strong id="summaryBot">Yuto</strong></span>
-    </div>
   </div>
 
   <!-- ==================== SEND BUTTON ==================== -->
-  <button id="sendBtn" class="send-btn" type="button">
-    <span class="btn-icon">📤</span> <span id="sendBtnText">ပို့မည်</span>
-  </button>
+  <button id="sendBtn" class="send-btn">📤 ပို့မည်</button>
 
   <!-- ==================== STATUS ==================== -->
-  <div id="statusCard" class="status-card">
-    <span class="status-icon">💬</span>
-    <span class="status-text" id="statusText">အဆင်သင့်ဖြစ်ပါပြီ</span>
+  <div class="status-bar" id="statusBar">
+    <span>💬</span> <span id="statusText">အဆင်သင့်ဖြစ်ပါပြီ</span>
   </div>
 
-  <!-- ==================== FOOTER ==================== -->
-  <div class="info-footer">
-    <span class="highlight">📸 ပုံ + စာ တွဲပို့နိုင်ပါသည်</span><br>
-    ပုံမထည့်ရင် စာပဲပို့မည် | ပုံပဲထည့်ရင် ပုံပဲပို့မည်<br>
-    <span style="color:#64748b;">Yuto • Hina • Yui | Long Press = Test Bot</span>
+  <!-- ==================== BOT SELECT MODAL ==================== -->
+  <div class="modal-overlay" id="botModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🤖 Bot ရွေးပါ</div>
+      <div class="modal-list" id="botModalList"></div>
+      <button class="modal-done-btn" id="botModalDone">ရွေးပြီး</button>
+    </div>
+  </div>
+
+  <!-- ==================== TOPIC SELECT MODAL ==================== -->
+  <div class="modal-overlay" id="topicModal">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">🗂️ Topic ရွေးပါ</div>
+      <div class="modal-list" id="topicModalList"></div>
+      <button class="modal-done-btn" id="topicModalDone">ရွေးပြီး</button>
+    </div>
   </div>
 
 </div>
 
 <script>
-  (function() {
-    console.log("🚀 Photo + Message Sender Started");
+(function() {
+  console.log("🚀 Compact MLBB Sender Ready");
 
-    // ==================== CONFIGURATION ====================
-    const BOT_LIST = [
-      {
-        id: "yuto", name: "Yuto", emoji: "🔵",
-        token: "8759285648:AAHqmcMPE4tPciixG-IzPCOVIl7E1XBhm6E",
-        color: "#3b82f6", bgClass: "selected-yuto", iconClass: "icon-yuto"
-      },
-      {
-        id: "hina", name: "Hina", emoji: "🌸",
-        token: "8058558723:AAG0Cwgw4Z3bdOGpkEGgBeNKSdNBbsXUuwY",
-        color: "#ec4899", bgClass: "selected-hina", iconClass: "icon-hina"
-      },
-      {
-        id: "yui", name: "Yui", emoji: "🍀",
-        token: "8728656019:AAES3bV3_5yLTm3a0lvE1dEVWBnyE6KQAwM",
-        color: "#10b981", bgClass: "selected-yui", iconClass: "icon-yui"
-      }
-      // 🔽 နောက်ထပ် Bot ထည့်ရန် ဒီမှာ
-    ];
+  // ==================== CONFIG ====================
+  const BOT_LIST = [
+    { id: "yuto", name: "Yuto", emoji: "🔵", token: "8759285648:AAHqmcMPE4tPciixG-IzPCOVIl7E1XBhm6E", color: "#3b82f6", iconClass: "icon-bot-yuto", selectedClass: "selected-bot-yuto" },
+    { id: "hina", name: "Hina", emoji: "🌸", token: "8058558723:AAG0Cwgw4Z3bdOGpkEGgBeNKSdNBbsXUuwY", color: "#ec4899", iconClass: "icon-bot-hina", selectedClass: "selected-bot-hina" },
+    { id: "yui", name: "Yui", emoji: "🍀", token: "8728656019:AAES3bV3_5yLTm3a0lvE1dEVWBnyE6KQAwM", color: "#10b981", iconClass: "icon-bot-yui", selectedClass: "selected-bot-yui" }
+  ];
 
-    const TOPIC_LIST = [
-  { id: "310661", name: "Bot Chat", emoji: "📢" },
-  { id: "1", name: "General", emoji: "💬", isGeneral: true },
-  { id: "310823", name: "Song Room", emoji: "⭐", isGeneral: false }
-];
+  const TOPIC_LIST = [
+    { id: "310661", name: "Topic 310661", emoji: "📢" },
+    { id: "310823", name: "Nova Starlar", emoji: "⭐" },
+    { id: "1", name: "General", emoji: "💬", isGeneral: true }
+  ];
 
-    const GROUP_USERNAME = "@MLBBMCCTG";
-    const MAX_PHOTO_SIZE = 10 * 1024 * 1024; // 10MB (Telegram limit)
+  const GROUP_USERNAME = "@MLBBMCCTG";
 
-    // ==================== STATE ====================
-    let selectedBotIndex = 0;
-    let selectedTopicId = TOPIC_LIST[0].id;
-    let selectedImageFile = null;
-    let isSending = false;
+  // ==================== STATE ====================
+  let selectedBotIndex = 0;
+  let selectedTopicId = TOPIC_LIST[0].id;
+  let selectedImageFile = null;
+  let isSending = false;
 
-    // ==================== DOM ELEMENTS ====================
-    const messageTextarea = document.getElementById("messageText");
-    const sendBtn = document.getElementById("sendBtn");
-    const sendBtnText = document.getElementById("sendBtnText");
-    const statusCard = document.getElementById("statusCard");
-    const statusText = document.getElementById("statusText");
-    const statusIcon = document.querySelector(".status-icon");
-    const charCount = document.getElementById("charCount");
-    const botSelectCards = document.getElementById("botSelectCards");
-    const topicChips = document.getElementById("topicChips");
-    const summaryTopic = document.getElementById("summaryTopic");
-    const summaryBot = document.getElementById("summaryBot");
-    const imageDropzone = document.getElementById("imageDropzone");
-    const imageInput = document.getElementById("imageInput");
-    const imagePreview = document.getElementById("imagePreview");
-    const imagePreviewContainer = document.getElementById("imagePreviewContainer");
-    const removeImageBtn = document.getElementById("removeImageBtn");
-    const imageInfo = document.getElementById("imageInfo");
-    const imageFileName = document.getElementById("imageFileName");
-    const imageFileSize = document.getElementById("imageFileSize");
-    const previewTextBadge = document.getElementById("previewTextBadge");
-    const previewPhotoBadge = document.getElementById("previewPhotoBadge");
-    const previewEmptyBadge = document.getElementById("previewEmptyBadge");
-    const progressBarContainer = document.getElementById("progressBarContainer");
-    const progressBar = document.getElementById("progressBar");
-    const addBotPlaceholder = document.getElementById("addBotPlaceholder");
+  // ==================== DOM ====================
+  const messageTextarea = document.getElementById("messageText");
+  const sendBtn = document.getElementById("sendBtn");
+  const statusBar = document.getElementById("statusBar");
+  const statusText = document.getElementById("statusText");
+  const charCount = document.getElementById("charCount");
+  const botSelectBtn = document.getElementById("botSelectBtn");
+  const botSelectValue = document.getElementById("botSelectValue");
+  const topicSelectBtn = document.getElementById("topicSelectBtn");
+  const topicSelectValue = document.getElementById("topicSelectValue");
+  const imageDropzone = document.getElementById("imageDropzone");
+  const imageInput = document.getElementById("imageInput");
+  const imagePreview = document.getElementById("imagePreview");
+  const imagePreviewContainer = document.getElementById("imagePreviewContainer");
+  const removeImageBtn = document.getElementById("removeImageBtn");
+  
+  // Modals
+  const botModal = document.getElementById("botModal");
+  const botModalList = document.getElementById("botModalList");
+  const botModalDone = document.getElementById("botModalDone");
+  const topicModal = document.getElementById("topicModal");
+  const topicModalList = document.getElementById("topicModalList");
+  const topicModalDone = document.getElementById("topicModalDone");
 
-    // ==================== IMAGE HANDLING ====================
-    function handleImageSelect(file) {
-      if (!file) return;
-
-      // Check file type
-      if (!file.type.startsWith("image/")) {
-        setStatus("ပုံဖိုင်သာ ရွေးချယ်ပါ", "error");
-        return;
-      }
-
-      // Check file size
-      if (file.size > MAX_PHOTO_SIZE) {
-        setStatus("ပုံဖိုင် 10MB ထက်မကျော်ရပါ", "error");
-        return;
-      }
-
-      selectedImageFile = file;
-
-      // Show preview
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        imagePreview.src = e.target.result;
-        imagePreviewContainer.style.display = "block";
-        imageDropzone.classList.add("has-image");
-        
-        // Show file info
-        imageInfo.style.display = "flex";
-        imageFileName.textContent = file.name.length > 30 ? file.name.substring(0, 27) + "..." : file.name;
-        imageFileSize.textContent = formatFileSize(file.size);
-      };
-      reader.readAsDataURL(file);
-
-      updateSendPreview();
-      console.log("📸 Image selected:", file.name, formatFileSize(file.size));
-    }
-
-    function removeImage() {
-      selectedImageFile = null;
-      imagePreview.src = "";
-      imagePreviewContainer.style.display = "none";
-      imageDropzone.classList.remove("has-image");
-      imageInfo.style.display = "none";
-      imageFileName.textContent = "-";
-      imageFileSize.textContent = "-";
-      imageInput.value = "";
-      updateSendPreview();
-      console.log("🗑️ Image removed");
-    }
-
-    function formatFileSize(bytes) {
-      if (bytes < 1024) return bytes + " B";
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-      return (bytes / (1024 * 1024)).toFixed(1) + " MB";
-    }
-
-    // ==================== SEND PREVIEW UPDATE ====================
-    function updateSendPreview() {
-      const hasText = messageTextarea.value.trim() !== "";
-      const hasPhoto = selectedImageFile !== null;
-
-      previewTextBadge.style.display = hasText ? "inline" : "none";
-      previewPhotoBadge.style.display = hasPhoto ? "inline" : "none";
-      previewEmptyBadge.style.display = (!hasText && !hasPhoto) ? "inline" : "none";
-    }
-
-    // ==================== RENDER BOT CARDS ====================
-    function renderBotCards() {
-      botSelectCards.innerHTML = "";
-      
-      BOT_LIST.forEach((bot, index) => {
-        const card = document.createElement("div");
-        card.className = `bot-card ${index === selectedBotIndex ? 'selected ' + bot.bgClass : ''}`;
-        card.setAttribute("data-bot-index", index);
-        card.innerHTML = `
-          <div class="bot-card-radio"><div class="bot-card-radio-inner"></div></div>
-          <div class="bot-card-icon ${bot.iconClass}">${bot.emoji}</div>
-          <div class="bot-card-info">
-            <div class="bot-card-name">${bot.name}</div>
-            <div class="bot-card-token">${bot.token.substring(0, 20)}...</div>
-          </div>
-          <div class="bot-card-status status-active" title="Active"></div>
-        `;
-        
-        card.addEventListener("click", function(e) {
-          e.preventDefault();
-          selectBot(index);
-        });
-        
-        card.addEventListener("touchend", function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          selectBot(index);
-        });
-        
-        botSelectCards.appendChild(card);
-      });
-    }
-
-    function selectBot(index) {
-      selectedBotIndex = index;
-      const cards = botSelectCards.querySelectorAll(".bot-card");
-      cards.forEach((card, i) => {
-        card.className = "bot-card";
-        if (i === index) {
-          card.classList.add("selected");
-          card.classList.add(BOT_LIST[i].bgClass);
-        }
-      });
-      updateSummary();
-    }
-
-    // ==================== RENDER TOPIC CHIPS ====================
-    function renderTopicChips() {
-      topicChips.innerHTML = "";
-      
-      TOPIC_LIST.forEach((topic) => {
-        const chip = document.createElement("div");
-        chip.className = `topic-chip ${topic.id === selectedTopicId ? 'selected' : ''}`;
-        chip.setAttribute("data-topic-id", topic.id);
-        chip.innerHTML = `
-          <div class="topic-chip-name">${topic.emoji} ${topic.name}</div>
-          <div class="topic-chip-id">ID: ${topic.id} ${topic.isGeneral ? '(General)' : ''}</div>
-        `;
-        
-        chip.addEventListener("click", function(e) {
-          e.preventDefault();
-          selectTopic(topic.id);
-        });
-        
-        chip.addEventListener("touchend", function(e) {
-          e.preventDefault();
-          e.stopPropagation();
-          selectTopic(topic.id);
-        });
-        
-        topicChips.appendChild(chip);
-      });
-    }
-
-    function selectTopic(topicId) {
-      selectedTopicId = topicId;
-      const chips = topicChips.querySelectorAll(".topic-chip");
-      chips.forEach(chip => {
-        chip.classList.remove("selected");
-        if (chip.getAttribute("data-topic-id") === topicId) {
-          chip.classList.add("selected");
-        }
-      });
-      updateSummary();
-    }
-
-    // ==================== UPDATE SUMMARY ====================
-    function updateSummary() {
-      summaryBot.textContent = BOT_LIST[selectedBotIndex].name;
-      summaryTopic.textContent = selectedTopicId;
-      summaryBot.style.color = BOT_LIST[selectedBotIndex].color;
-    }
-
-    // ==================== CHARACTER COUNT ====================
-    function updateCharCount() {
-      const len = messageTextarea.value.length;
-      charCount.textContent = len + " / 4096";
-      if (len > 4000) charCount.style.color = "#fbbf24";
-      else if (len > 4090) charCount.style.color = "#ef4444";
-      else charCount.style.color = "#64748b";
-      updateSendPreview();
-    }
-    messageTextarea.addEventListener("input", updateCharCount);
-
-    // ==================== STATUS ====================
-    function setStatus(text, type = "info") {
-      statusText.textContent = text;
-      statusCard.className = "status-card";
-      
-      if (type === "success") {
-        statusCard.classList.add("success");
-        statusIcon.textContent = "✅";
-      } else if (type === "error") {
-        statusCard.classList.add("error");
-        statusIcon.textContent = "❌";
-      } else if (type === "warning") {
-        statusCard.classList.add("warning");
-        statusIcon.textContent = "⚠️";
-      } else if (type === "loading") {
-        statusIcon.innerHTML = '<span class="spinner"></span>';
-      } else {
-        statusIcon.textContent = "💬";
-      }
-    }
-
-    // ==================== LOADING ====================
-    function setLoading(loading) {
-      isSending = loading;
-      if (loading) {
-        sendBtn.disabled = true;
-        sendBtnText.innerHTML = '<span class="spinner"></span> ပို့နေသည်...';
-        progressBarContainer.style.display = "block";
-        progressBar.style.width = "0%";
-      } else {
-        sendBtn.disabled = false;
-        sendBtnText.innerHTML = 'ပို့မည်';
-        progressBarContainer.style.display = "none";
-        progressBar.style.width = "0%";
-      }
-    }
-
-    function updateProgress(percent) {
-      progressBar.style.width = percent + "%";
-    }
-
-    // ==================== SEND MESSAGE ====================
-    async function sendMessage() {
-      console.log("📤 sendMessage called");
-      
-      if (isSending) {
-        console.log("⚠️ Already sending");
-        return;
-      }
-      
-      const message = messageTextarea.value.trim();
-      const hasPhoto = selectedImageFile !== null;
-      const hasText = message !== "";
-
-      // ဘာမှမရှိရင် မပို့ဘူး
-      if (!hasPhoto && !hasText) {
-        setStatus("စာသား သို့မဟုတ် ပုံ ထည့်သွင်းပါ", "error");
-        if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-        return;
-      }
-
-      const bot = BOT_LIST[selectedBotIndex];
-      const token = bot.token;
-      const topicId = selectedTopicId;
-
-      setLoading(true);
-      
-      const topicLabel = topicId === "1" ? "General" : `Topic ${topicId}`;
-      
-      if (hasPhoto && hasText) {
-        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံနှင့်စာ ပို့နေသည်...`, "loading");
-      } else if (hasPhoto) {
-        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံပို့နေသည်...`, "loading");
-      } else {
-        setStatus(`${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ စာပို့နေသည်...`, "loading");
-      }
-
-      console.log("🚀 Sending...");
-      console.log("Bot:", bot.name);
-      console.log("Topic:", topicId);
-      console.log("Has Photo:", hasPhoto);
-      console.log("Has Text:", hasText);
-
-      try {
-        // ============ ပုံပါရင် ပုံအရင်ပို့ ============
-        if (hasPhoto) {
-          updateProgress(20);
-          
-          // Send Photo
-          const photoFormData = new FormData();
-          photoFormData.append("chat_id", GROUP_USERNAME);
-          photoFormData.append("photo", selectedImageFile);
-          
-          if (topicId !== "1") {
-            photoFormData.append("message_thread_id", topicId);
-          }
-          
-          // စာပါရင် caption ထည့်
-          if (hasText) {
-            photoFormData.append("caption", message);
-            photoFormData.append("parse_mode", "HTML");
-          }
-
-          const photoApiUrl = `https://api.telegram.org/bot${token}/sendPhoto`;
-          
-          updateProgress(40);
-          
-          console.log("📸 Uploading photo...");
-          const photoResponse = await fetch(photoApiUrl, {
-            method: "POST",
-            body: photoFormData
-          });
-
-          updateProgress(80);
-
-          const photoData = await photoResponse.json();
-          console.log("📬 Photo Response:", photoData);
-
-          if (photoData.ok) {
-            updateProgress(100);
-            
-            if (hasText) {
-              setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံနှင့်စာ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
-            } else {
-              setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ ပုံ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
-            }
-            
-            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-            
-            // Remove image after successful send
-            removeImage();
-          } else {
-            const errorDesc = photoData.description || "အမှားရှိနေပါသည်";
-            setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            console.error("Photo API Error:", photoData);
-          }
-        } 
-        // ============ ပုံမပါရင် စာပဲပို့ ============
-        else {
-          updateProgress(30);
-          
-          const formData = new URLSearchParams();
-          formData.append("chat_id", GROUP_USERNAME);
-          formData.append("text", message);
-          
-          if (topicId !== "1") {
-            formData.append("message_thread_id", topicId);
-          }
-          
-          formData.append("parse_mode", "HTML");
-
-          const apiUrl = `https://api.telegram.org/bot${token}/sendMessage`;
-          
-          updateProgress(60);
-
-          const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: formData.toString()
-          });
-
-          updateProgress(90);
-
-          const data = await response.json();
-          console.log("📬 Message Response:", data);
-
-          if (data.ok) {
-            updateProgress(100);
-            setStatus(`✅ ${bot.emoji} ${bot.name} မှ ${topicLabel} သို့ စာ အောင်မြင်စွာ ပို့ပြီးပါပြီ!`, "success");
-            if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
-          } else {
-            const errorDesc = data.description || "အမှားရှိနေပါသည်";
-            setStatus(`❌ ${bot.name}: ${errorDesc}`, "error");
-            if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-            console.error("Message API Error:", data);
-          }
-        }
-      } catch (networkError) {
-        setStatus(`🌐 ${bot.name}: အင်တာနက် ချိတ်ဆက်မှု စစ်ဆေးပါ`, "error");
-        console.error("Fetch Error:", networkError);
-      } finally {
-        setLoading(false);
-        setTimeout(() => {
-          progressBarContainer.style.display = "none";
-        }, 1000);
-      }
-    }
-
-    // ==================== TEST BOT ====================
-    async function testBot(index) {
-      const bot = BOT_LIST[index];
-      const apiUrl = `https://api.telegram.org/bot${bot.token}/getMe`;
-      
-      setStatus(`${bot.emoji} ${bot.name} စမ်းသပ်နေသည်...`, "loading");
-      
-      try {
-        const response = await fetch(apiUrl);
-        const data = await response.json();
-        
-        if (data.ok) {
-          setStatus(`✅ ${bot.emoji} ${bot.name} (@${data.result.username}) - အလုပ်လုပ်ပါသည်`, "success");
-          updateBotStatusDot(index, true);
-        } else {
-          setStatus(`❌ ${bot.emoji} ${bot.name} - Token မှားနေပါသည်`, "error");
-          updateBotStatusDot(index, false);
-        }
-      } catch (error) {
-        setStatus(`🌐 ${bot.emoji} ${bot.name} - စစ်ဆေး၍မရပါ`, "error");
-        updateBotStatusDot(index, false);
-      }
-    }
-
-    function updateBotStatusDot(index, isActive) {
-      const cards = botSelectCards.querySelectorAll(".bot-card");
-      if (cards[index]) {
-        const statusDot = cards[index].querySelector(".bot-card-status");
-        statusDot.className = "bot-card-status";
-        statusDot.classList.add(isActive ? "status-active" : "status-inactive");
-        statusDot.title = isActive ? "Active" : "Inactive";
-      }
-    }
-
-    // ==================== EVENT LISTENERS ====================
-
-    // Image Dropzone Click
-    imageDropzone.addEventListener("click", function(e) {
-      if (e.target === removeImageBtn) return;
-      e.preventDefault();
-      imageInput.click();
-    });
-
-    imageDropzone.addEventListener("touchend", function(e) {
-      if (e.target === removeImageBtn) return;
-      e.preventDefault();
-      imageInput.click();
-    });
-
-    // Image Input Change
-    imageInput.addEventListener("change", function(e) {
-      if (e.target.files && e.target.files[0]) {
-        handleImageSelect(e.target.files[0]);
-      }
-    });
-
-    // Remove Image Button
-    removeImageBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      removeImage();
-    });
-
-    removeImageBtn.addEventListener("touchend", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      removeImage();
-    });
-
-    // Drag and Drop (Desktop)
-    imageDropzone.addEventListener("dragover", function(e) {
-      e.preventDefault();
-      imageDropzone.style.borderColor = "#3b82f6";
-    });
-
-    imageDropzone.addEventListener("dragleave", function(e) {
-      e.preventDefault();
-      if (!selectedImageFile) {
-        imageDropzone.style.borderColor = "#1e293b";
-      }
-    });
-
-    imageDropzone.addEventListener("drop", function(e) {
-      e.preventDefault();
-      if (!selectedImageFile) {
-        imageDropzone.style.borderColor = "#1e293b";
-      }
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-        handleImageSelect(e.dataTransfer.files[0]);
-      }
-    });
-
-    // Send Button
-    sendBtn.addEventListener("click", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log("🖱️ Send button CLICKED");
-      sendMessage();
-    });
-
-    sendBtn.addEventListener("touchend", function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      console.log("👆 Send button TOUCHED");
-      sendMessage();
-    });
-
-    sendBtn.addEventListener("touchstart", function(e) {
-      e.preventDefault();
-    });
-
-    // Keyboard shortcut
-    messageTextarea.addEventListener("keydown", function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+  // ==================== RENDER BOT MODAL ====================
+  function renderBotModal() {
+    botModalList.innerHTML = "";
+    BOT_LIST.forEach((bot, index) => {
+      const item = document.createElement("div");
+      item.className = `modal-item ${index === selectedBotIndex ? 'selected ' + bot.selectedClass : ''}`;
+      item.setAttribute("data-index", index);
+      item.innerHTML = `
+        <div class="modal-item-icon ${bot.iconClass}">${bot.emoji}</div>
+        <div class="modal-item-info">
+          <div class="modal-item-name">${bot.name}</div>
+          <div class="modal-item-sub">${bot.token.substring(0, 22)}...</div>
+        </div>
+        <span class="modal-item-check">✓</span>
+      `;
+      item.addEventListener("click", function(e) {
         e.preventDefault();
-        sendMessage();
+        selectBotInModal(index);
+      });
+      botModalList.appendChild(item);
+    });
+  }
+
+  function selectBotInModal(index) {
+    const items = botModalList.querySelectorAll(".modal-item");
+    items.forEach((item, i) => {
+      item.className = "modal-item";
+      if (i === index) {
+        item.classList.add("selected");
+        item.classList.add(BOT_LIST[i].selectedClass);
       }
     });
+    // Update state
+    selectedBotIndex = index;
+    botSelectValue.textContent = BOT_LIST[index].name;
+    botSelectValue.style.color = BOT_LIST[index].color;
+  }
 
-    // Long press bot card to test
-    let longPressTimer;
-    botSelectCards.addEventListener("touchstart", function(e) {
-      const card = e.target.closest(".bot-card");
-      if (!card) return;
-      const index = parseInt(card.getAttribute("data-bot-index"));
-      longPressTimer = setTimeout(() => {
-        testBot(index);
-        if (navigator.vibrate) navigator.vibrate(50);
-      }, 800);
+  // ==================== RENDER TOPIC MODAL ====================
+  function renderTopicModal() {
+    topicModalList.innerHTML = "";
+    TOPIC_LIST.forEach((topic) => {
+      const item = document.createElement("div");
+      item.className = `modal-item ${topic.id === selectedTopicId ? 'selected' : ''}`;
+      item.setAttribute("data-id", topic.id);
+      const iconClass = topic.isGeneral ? "icon-topic-general" : "icon-topic";
+      item.innerHTML = `
+        <div class="modal-item-icon ${iconClass}">${topic.emoji}</div>
+        <div class="modal-item-info">
+          <div class="modal-item-name">${topic.name}</div>
+          <div class="modal-item-sub">ID: ${topic.id} ${topic.isGeneral ? '(message_thread_id မပါ)' : ''}</div>
+        </div>
+        <span class="modal-item-check">✓</span>
+      `;
+      item.addEventListener("click", function(e) {
+        e.preventDefault();
+        selectTopicInModal(topic.id);
+      });
+      topicModalList.appendChild(item);
     });
+  }
+
+  function selectTopicInModal(topicId) {
+    const items = topicModalList.querySelectorAll(".modal-item");
+    items.forEach(item => {
+      item.classList.remove("selected");
+      if (item.getAttribute("data-id") === topicId) {
+        item.classList.add("selected");
+      }
+    });
+    selectedTopicId = topicId;
+    const topic = TOPIC_LIST.find(t => t.id === topicId);
+    topicSelectValue.textContent = topic ? topic.name : topicId;
+    topicSelectValue.style.color = "#f1f5f9";
+  }
+
+  // ==================== IMAGE HANDLING ====================
+  function handleImageSelect(file) {
+    if (!file || !file.type.startsWith("image/")) return;
+    if (file.size > 10 * 1024 * 1024) {
+      setStatus("ပုံ 10MB ထက်မကျော်ရပါ", "error");
+      return;
+    }
+    selectedImageFile = file;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+      imagePreviewContainer.style.display = "block";
+      imageDropzone.classList.add("has-image");
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function removeImage() {
+    selectedImageFile = null;
+    imagePreview.src = "";
+    imagePreviewContainer.style.display = "none";
+    imageDropzone.classList.remove("has-image");
+    imageInput.value = "";
+  }
+
+  // ==================== STATUS ====================
+  function setStatus(text, type = "info") {
+    statusText.textContent = text;
+    statusBar.className = "status-bar";
+    if (type === "success") statusBar.classList.add("success");
+    if (type === "error") statusBar.classList.add("error");
+    if (type === "loading") statusBar.classList.add("loading");
+  }
+
+  // ==================== LOADING ====================
+  function setLoading(loading) {
+    isSending = loading;
+    sendBtn.disabled = loading;
+    sendBtn.innerHTML = loading ? '<span class="spinner"></span> ပို့နေသည်...' : '📤 ပို့မည်';
+  }
+
+  // ==================== SEND ====================
+  async function sendMessage() {
+    if (isSending) return;
     
-    botSelectCards.addEventListener("touchend", function() { clearTimeout(longPressTimer); });
-    botSelectCards.addEventListener("touchmove", function() { clearTimeout(longPressTimer); });
+    const message = messageTextarea.value.trim();
+    const hasPhoto = selectedImageFile !== null;
+    const hasText = message !== "";
 
-    botSelectCards.addEventListener("dblclick", function(e) {
-      const card = e.target.closest(".bot-card");
-      if (!card) return;
-      const index = parseInt(card.getAttribute("data-bot-index"));
-      testBot(index);
-    });
-
-    addBotPlaceholder.addEventListener("click", function(e) {
-      e.preventDefault();
-      setStatus("💡 Bot အသစ်ထည့်ရန် Code ထဲက BOT_LIST Array တွင် Object အသစ်ထည့်ပါ", "warning");
-    });
-
-    // ==================== INITIAL SETUP ====================
-    function init() {
-      console.log("🔧 Initializing...");
-      renderBotCards();
-      renderTopicChips();
-      updateCharCount();
-      updateSummary();
-      updateSendPreview();
-      setStatus("အဆင်သင့်ဖြစ်ပါပြီ • ပုံ နှင့် စာ ပို့နိုင်ပါသည်", "info");
-      
-      console.log("✅ MLBB Photo + Message Sender Ready");
-      console.log("🤖 Bots:", BOT_LIST.map(b => b.name).join(", "));
-      console.log("📸 Photo support: YES (max 10MB)");
-      console.log("📝 Message support: YES");
+    if (!hasPhoto && !hasText) {
+      setStatus("စာသား သို့မဟုတ် ပုံ ထည့်ပါ", "error");
+      return;
     }
 
-    init();
-  })();
+    const bot = BOT_LIST[selectedBotIndex];
+    const topicId = selectedTopicId;
+    const topicLabel = topicId === "1" ? "General" : TOPIC_LIST.find(t => t.id === topicId)?.name || topicId;
+
+    setLoading(true);
+    setStatus(`${bot.emoji} ${bot.name} → ${topicLabel} ပို့နေသည်...`, "loading");
+
+    try {
+      if (hasPhoto) {
+        const formData = new FormData();
+        formData.append("chat_id", GROUP_USERNAME);
+        formData.append("photo", selectedImageFile);
+        if (topicId !== "1") formData.append("message_thread_id", topicId);
+        if (hasText) { formData.append("caption", message); formData.append("parse_mode", "HTML"); }
+
+        const res = await fetch(`https://api.telegram.org/bot${bot.token}/sendPhoto`, { method: "POST", body: formData });
+        const data = await res.json();
+
+        if (data.ok) {
+          setStatus(`✅ ${bot.emoji} ${bot.name} → ${topicLabel} ပို့ပြီး!`, "success");
+          removeImage();
+        } else {
+          setStatus(`❌ ${data.description}`, "error");
+        }
+      } else {
+        const formData = new URLSearchParams();
+        formData.append("chat_id", GROUP_USERNAME);
+        formData.append("text", message);
+        if (topicId !== "1") formData.append("message_thread_id", topicId);
+        formData.append("parse_mode", "HTML");
+
+        const res = await fetch(`https://api.telegram.org/bot${bot.token}/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: formData.toString()
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          setStatus(`✅ ${bot.emoji} ${bot.name} → ${topicLabel} ပို့ပြီး!`, "success");
+        } else {
+          setStatus(`❌ ${data.description}`, "error");
+        }
+      }
+    } catch (e) {
+      setStatus(`🌐 အင်တာနက်စစ်ဆေးပါ`, "error");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ==================== EVENT LISTENERS ====================
+  
+  // Bot Select Button
+  botSelectBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    renderBotModal();
+    botModal.classList.add("active");
+  });
+
+  // Topic Select Button
+  topicSelectBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    renderTopicModal();
+    topicModal.classList.add("active");
+  });
+
+  // Modal Done Buttons
+  botModalDone.addEventListener("click", function(e) {
+    e.preventDefault();
+    botModal.classList.remove("active");
+  });
+  topicModalDone.addEventListener("click", function(e) {
+    e.preventDefault();
+    topicModal.classList.remove("active");
+  });
+
+  // Close modal on overlay click
+  botModal.addEventListener("click", function(e) {
+    if (e.target === botModal) botModal.classList.remove("active");
+  });
+  topicModal.addEventListener("click", function(e) {
+    if (e.target === topicModal) topicModal.classList.remove("active");
+  });
+
+  // Image Dropzone
+  imageDropzone.addEventListener("click", function(e) {
+    if (e.target === removeImageBtn) return;
+    e.preventDefault();
+    imageInput.click();
+  });
+  imageInput.addEventListener("change", function(e) {
+    if (e.target.files && e.target.files[0]) handleImageSelect(e.target.files[0]);
+  });
+  removeImageBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    removeImage();
+  });
+
+  // Send Button
+  sendBtn.addEventListener("click", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    sendMessage();
+  });
+  sendBtn.addEventListener("touchend", function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    sendMessage();
+  });
+
+  // Char count
+  messageTextarea.addEventListener("input", function() {
+    charCount.textContent = messageTextarea.value.length + " / 4096";
+  });
+
+  // Keyboard shortcut
+  messageTextarea.addEventListener("keydown", function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  // ==================== INIT ====================
+  function init() {
+    charCount.textContent = "0 / 4096";
+    botSelectValue.textContent = BOT_LIST[0].name;
+    botSelectValue.style.color = BOT_LIST[0].color;
+    const defaultTopic = TOPIC_LIST.find(t => t.id === selectedTopicId);
+    topicSelectValue.textContent = defaultTopic ? defaultTopic.name : selectedTopicId;
+    setStatus("အဆင်သင့်ဖြစ်ပါပြီ • Bot နှင့် Topic ရွေးပါ");
+    console.log("✅ Ready");
+  }
+
+  init();
+})();
 </script>
 </body>
 </html>
